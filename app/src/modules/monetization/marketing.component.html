@@ -1,0 +1,39 @@
+<div class="m-monetization--marketing">
+
+  <div class="m-monetization--marketing-header">
+    <h1>عمومی کردن پروفایل کاربری</h1>
+    <h3>برای عمومی کردن پروفایل خود، بر روی لینک زیر کلیک کنید</h3>
+
+    <div class="m-monetization--marketing-action-button">
+      <button class="mdl-button mdl-button--colored mdl-color--green" *ngIf="user && !isMonetized()" (click)="onboard()" [hidden]="showOnboardingForm">فعال سازی</button>
+      <button class="mdl-button mdl-button--colored mdl-color--green" *ngIf="!user" routerLink="/login">ورود</button>
+      <button class="mdl-button mdl-button--colored mdl-color--green" *ngIf="isMonetized()" routerLink="/newsfeed">شما پروفایل خود را عمومی سازی کرده اید</button>
+    </div>
+  </div>
+
+  <m-monetization--onboarding *ngIf="showOnboardingForm" class="mdl-shadow--4dp" (completed)="onboardCompleted($event)"></m-monetization--onboarding>
+
+  <div class="m-monetization--marketing-contents mdl-grid mdl-grid--no-spacing">
+    <div class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--6-col-phone">
+      <i class="material-icons mdl-color-text--blue-grey-700">share</i>
+      <h2></h2>
+      <span>عمومی کردن پروفایل، این امکان را به شما میدهد تا بتوانید با دیگران ارتباط برقرار کنید.</span>
+    </div>
+    <div class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--6-col-phone">
+      <i class="material-icons mdl-color-text--blue-grey-700">vpn_key</i>
+      <h2></h2>
+      <span>پروفایل خود را عمومی کنید تا دیگران محتواهای شما را مشاهده کنند.</span>
+    </div>
+    <div class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--6-col-phone">
+        <i class="material-icons mdl-color-text--blue-grey-700">file_upload</i>
+      <h2></h2>
+      <span>با عمومی کردن پروفایل خود، می توانید فیلم های خود را بارگذاری کنید.</span>
+    </div>
+  </div>
+
+  <m-monetization--terms class="mdl-shadow--2dp"></m-monetization--terms>
+
+
+</div>
+
+<m-footer></m-footer>

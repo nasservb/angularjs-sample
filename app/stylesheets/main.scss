@@ -1,0 +1,661 @@
+@import url(fontiran.css);
+@import 'defaults';
+
+body {
+  direction: rtl;
+  font-family: IRANSans,sans-serif;
+}
+
+h1,h2,h3,h4,h6,input,select,p,textarea{
+  font-family: IRANSans,'Lato' !important;
+}
+h1{
+  font-weight:300;
+}
+
+p {
+  word-wrap: break-word;
+}
+
+afs-app{
+  .initial-loading{
+    width:100%;
+  }
+}
+
+.afs-noshadow{
+  box-shadow:0 0 0 !important;
+}
+
+afs-topbar{
+
+  .afs-logo{
+
+    height: 64px;
+    box-sizing: border-box;
+    padding: 8px 0 8px*2;
+    width: 100px;
+    margin-left: 24px;
+
+    img{
+      height:100%;
+    }
+  }
+
+  afs-topbar-navigation{
+    nav{
+      display:flex;
+      flex-direction:row;
+
+      a {
+        text-decoration:none;
+        display:flex;
+        align-items:center;
+        padding-right: 8px;
+        position: relative;
+
+        .counter{
+          padding:8px/2;
+        }
+      }
+
+    }
+  }
+
+  .afs-account{
+    img{
+      height:42px;
+      max-height: 42px;
+      border-radius: 50%;
+    }
+  }
+
+  .m-notifications-toaster {
+    position: fixed;
+    top: 64px + (8px / 2);
+    right: 8px * 2;
+    width: 350px;
+    max-width: 100vw;
+    max-height: 75vh;
+
+    @media screen and (max-width: $max-mobile) {
+      right: 0;
+    }
+
+    afs-notification {
+      margin-bottom: 8px;
+      padding: 8px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .body {
+        font-size: 0.8em;
+      }
+    }
+  }
+
+}
+
+@media screen and (max-width: $max-mobile){
+  afs-topbar {
+    .afs-logo{
+      display: block;
+      position: fixed;
+      width: 75px;
+      height: 30px;
+      left: calc(50vw - 35.5px);
+      /* z-index: 1; */
+      padding: 0;
+      padding-bottom: 2px;
+    }
+    afs-topbar-navigation{
+      nav a:first-of-type{
+        //display:none;
+      }
+      nav a .counter{
+        display:none;
+      }
+    }
+    .afs-account img{
+      height:28px;
+    }
+  }
+}
+
+@media screen and (max-width: 320px){
+  afs-topbar afs-topbar-navigation nav{
+    display:none;
+  }
+  afs-topbar afs-search-bar{
+    display:none;
+  }
+}
+
+.afs-login-box{
+  padding:8px * 2;
+  margin:auto;
+  min-height: 100px;
+}
+
+.mdl-tabs__tab.is-active{
+  border-bottom:2px solid #FFC108;
+}
+
+.mdl-textfield__label{
+  .material-icons{
+    line-height: 0;
+    vertical-align: middle;
+  }
+}
+.mdl-card__supporting-text{
+  word-wrap: break-word;
+
+  textarea{
+    color: rgba(0,0,0,.87);
+    font-size: 13px;
+    line-height: 18px;
+    resize:none;
+  }
+}
+
+.mdl-shadow--2dp {
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.07),0 3px 1px -2px rgba(0,0,0,.1),0 1px 5px 0 rgba(0,0,0,.07);
+}
+.mdl-shadow--4dp {
+  box-shadow: 0 4px 4px 0 rgba(0,0,0,.07),0 3px 1px -2px rgba(0,0,0,.1),0 1px 5px 0 rgba(0,0,0,.07);
+}
+
+.coming-soon{
+  section {
+    height: 300px;
+    align-items: center;
+    -webkit-align-items: center;
+    justify-content: center;
+    display: flex;
+    padding: 55px;
+    text-transform: uppercase;
+    font-weight: 100;
+    font-size: 41px;
+  }
+}
+
+.afs-spacer{
+  height:8px;
+  width:8px;
+}
+.afs-spacer-2x{
+  height:8px*2;
+  width:8px*2;
+}
+
+
+.afs-block {
+  display: flex;
+  flex-direction: row;
+
+  .afs-avatar{
+    margin-right:8px;
+  }
+  .afs-body{
+    flex:1;
+  }
+}
+
+.afs-error{
+  display: inline-block;
+  vertical-align: middle;
+  padding: 8px;
+  font-size: 13px;
+  border-radius: 3px;
+}
+
+.afs-reset-password-title{
+  font-size: 16px;
+  text-align: center;
+  padding: 20px;
+}
+
+.afs-reset-password-link{
+  padding: 20px 0px;
+}
+
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.m-isomorphic-link {
+  color: inherit;
+  text-decoration: inherit;
+  font-weight: inherit;
+}
+
+blockquote { quotes: ''; }
+blockquote:before { content: '\201C'; }
+blockquote:after { content: '\201D'; }
+
+@import '../src/**/*';
+@import 'core/*';
+
+@import 'components/*';
+@import 'controllers/*';
+
+@import 'overrides.scss';
+
+@import 'ionicons.scss';
+
+/**
+ * For modern browsers
+ * 1. The space content is one way to avoid an Opera bug when the
+ *    contenteditable attribute is included anywhere else in the document.
+ *    Otherwise it causes space to appear at the top and bottom of elements
+ *    that are clearfixed.
+ * 2. The use of `table` rather than `block` is only necessary if using
+ *    `:before` to contain the top-margins of child elements.
+ */
+.cf:before,
+.cf:after {
+  content: " "; /* 1 */
+  display: table; /* 2 */
+}
+
+.cf:after {
+  clear: both;
+}
+
+.mdl-color--blue-grey-800 {
+  background-color: #029fc8 !important;
+}
+.mdl-color-text--blue-grey-100 {
+  color: #fff !important;
+}
+.mdl-button--raised.mdl-button--colored {
+  background-color: #029fc8;
+}
+.mdl-button {
+  font-family: IRANSans,"Roboto","Helvetica","Arial",sans-serif;
+}
+::-webkit-input-placeholder {
+  font-family: IRANSans, Arial, Helvetica, sans-serif;
+  color: #d0c9c9;
+}
+:-moz-placeholder {
+  font-family: IRANSans, Arial, Helvetica, sans-serif;
+  color: #d0c9c9;
+}
+::-moz-placeholder {
+  font-family: IRANSans, Arial, Helvetica, sans-serif;
+  color: #d0c9c9;
+}
+:-ms-input-placeholder {
+  font-family: IRANSans, Arial, Helvetica, sans-serif;
+  color: #d0c9c9;
+}
+.forColorAfs1 {
+  color:#fff !important;
+}
+.mdl-spinner {
+  direction: ltr !important;
+}
+.mdl-menu__item {
+  text-align: right !important;
+}
+.mdl-textfield__input {
+  text-align: right;
+}
+.mdl-textfield__label {
+  text-align: right;
+}
+.mdl-textfield__input {
+  font-family: IRANSans,"Helvetica","Arial",sans-serif;
+}
+.mdl-color--blue-grey {
+  background-color: #007796 !important;
+}
+.afs-video-bar-full {
+  direction: ltr;
+}
+.forUsernameComment {
+  float: right !important;
+}
+.forIconComment {
+  top: 6px !important;
+  left: 104px !important;
+}
+.forAboutAfs {
+  background-color: #007796!important;
+  padding: 35px 0 !important;
+}
+.forAboutAfs h5 {
+  font-family: IRANSans;
+  line-height: 32px;
+}
+.forAboutAfs a {
+  color: #fff;
+}
+.forNavTop {
+  margin-left: 12px;
+}
+.forCloseButton {
+  left: 0;
+  right: 16px;
+}
+span {
+  line-height: 23px;
+}
+h6 {
+  line-height: 35px;
+}
+.forMediaEditForm {
+  background-color: #fff !important;;
+  color: #04576d !important;
+}
+.forShowCategory {
+  color: #04576d;
+}
+.forTextareaMedia {
+  background: #fff;
+  border: 1px solid #d0c9c9;
+}
+.forTextJustify {
+  text-align: justify;
+  display: inline-block;
+  width: 100%;
+}
+.forInitialForm {
+  text-align: center;
+}
+.forColorBlack {
+  color: #000 !important;
+}
+.forInitialForm button {
+  padding: 8px !important;
+  font-size: 17px !important;
+  background-color: #0babc7 !important;
+  text-align: center !important;
+}
+.forInitialForm .m-signup-button-text {
+  font-size: 16px !important;
+}
+.forForgotPasswordForm .mdl-color--blue-grey-500 {
+  background-color: #007796  !important;
+}
+.forForgotPasswordForm .mdl-card__supporting-text {
+  color: #fff !important;
+}
+.forForgotPasswordForm .mdl-color--blue-grey-200 {
+  background-color: #fff !important;
+}
+.m-report-creator--subjects span {
+  font-family: IRANSans;
+}
+.m-report-creator--note textarea {
+  font-family: IRANSans;
+}
+.forInviteForm {
+  margin: 3px 29px 0 0;
+  color: #000;
+}
+.m-content-sidebar-nav-item a {
+  font-family: IRANSans;
+}
+.m-report-creator--button,.afs-subscribe-button {
+  font-family: IRANSans !important;
+}
+.mdl-color--warning-500 {
+  background-color: #ffc107!important;
+}
+.MsoNormal span,.m-button span
+{
+  font-family: IRANSans;
+}
+.m-social-share-telegram {
+  background: #20a0e1;
+}
+.forFeaturedSelect {
+  padding: 10px;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  margin: 12px 53px 17px 0;
+}
+.forFeaturedButton {
+  background-color: #e8e8e8;
+  position: relative;
+  z-index: 1;
+}
+.forPagesContent {
+  padding: 0 10px;
+  text-align: justify;
+  display: inline-block;
+}
+.forPagesContent ol {
+  font-family: 'IRANSans';
+}
+
+//For header menu
+
+@media only screen and (max-width: 700px) {
+  .forHeaderMenu {
+    display: none;
+  }
+}
+
+
+@media only screen and (min-width: 700px) {
+  .forHeaderMenu {
+    right: 10%;
+    position: relative;
+    display: block;
+  }
+
+  .nav {
+    font-family: 'IRANSans', 'Orienta', sans-serif;
+    font-weight: 400; /* 400 thinner */
+    font-size: 11pt;
+    line-height: 13px;
+    position: relative;
+    padding: 0 0 0 4px; /* Fix for inline-block spacing*/
+    margin: 0;
+    background-color: #fff;
+  }
+
+  .nav a, .nav a:link, .nav a:visited, .nav a:hover, .nav a:focus, .nav span {
+    color: #666;
+    text-decoration: none;
+  }
+  .nav > li {
+    display: inline-block;
+    text-align: center;
+    margin-left: -4px; /* For the inline-block spacing */
+  }
+  .nav > li > a {
+    padding: 15px 7px;
+    display: block;
+  }
+  .nav > li:hover > a {
+    color: #f00;
+  }
+  .nav > li:hover {
+    background-color: #f7f7f7;
+  }
+  .nav > li > ul {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    list-style: none;
+    top: 53px;
+    background-color: #f7f7f7;
+    width: 200px;
+    text-align: right;
+    margin-top: 30px;
+    padding: 0px;
+    z-index: 99;
+  }
+  .nav > li:hover > ul {
+    opacity: 1;
+    visibility: visible;
+    margin-top: 0px;
+  }
+  .nav li > ul li {
+    font-size: 11px;
+    position: relative;
+    display: block;
+    padding: 15px 10px;
+  }
+  .nav > li > ul li:hover {
+    background-color: #f7f7f7;
+  }
+  .nav ul li:hover > a {
+    color: white;
+  }
+  .nav > li > ul li ul li:hover {
+    background-color: #f7f7f7;
+  }
+  input#mobile_menu {
+    display: none;
+  }
+
+  .nav > li > ul li ul li ul {
+    background-color: #f7f7f7;
+  }
+  .nav > li > ul li ul li ul li:hover {
+    background-color: #f7f7f7;
+  }
+  .nav > li > .fulldrop {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    list-style: none;
+    top: 44px;
+    right: 0px;
+    background-color: #fff;
+    width: 100%;
+    min-height: 100px;
+    text-align: right;
+    margin-top: 30px;
+    padding: 0;
+    z-index: 99;
+    overflow: hidden;
+    box-shadow: 1px 1px #b1afaf;
+  }
+  .nav > li:hover .fulldrop {
+    opacity: 1;
+    visibility: visible;
+    margin-top: 0px;
+  }
+  .nav ul li:hover:after {
+    color: white;
+  }
+  .nav > li:hover .coldrop {
+    opacity: 1;
+    visibility: visible;
+    margin-top: 0px;
+  }
+  .nav .coldrop .column {
+    width: 130px;
+    margin: 0 9px;
+  }
+  .nav .column {
+    width: 14.1%;
+    float: right;
+    color: white;
+    margin: 0 0 10px 2.2%;
+  }
+  .nav .column ul {
+    padding: 0;
+    margin: 0;
+  }
+  .nav .column ul li {
+    padding: 0;
+    list-style: none;
+    font-size: 11px;
+  }
+  .nav .column h3 {
+    font-size: 11pt;
+    padding: 14px 0;
+    //font-weight: bold;
+    margin: 5px 15px 0 0;
+    color: #f00;
+  }
+  .nav .column ul li a {
+    display: block;
+    padding: 0 15px 0 0;
+  }
+  .nav .column ul li a:hover {
+    color: #eb1f33;
+  }
+  /* Arrows */
+  .nav > li.dropdown > a:after {
+    /*content: " \f107";
+    font-family: FontAwesome;
+    color: #fff;*/
+  }
+  .nav ul li.dropdown:after {
+    position: absolute;
+    left: 170px;
+    font-family: FontAwesome;
+    display: inline-block;
+    color: #fff;
+    margin-right: 10px;
+    margin-top: 2px;
+  }
+  .nav > li.search {
+    border: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    float: right;
+    padding: 11px 6px;
+    position: relative;
+  }
+  .nav > li.search:hover {
+    background-color: transparent;
+  }
+  .nav > li input {
+    padding: 7px 6px 6px 38px;
+    margin: 0 5px;
+    color: #fff;
+    background-color: #f7f7f7;
+    font-size: 14px;
+    border: 2px solid #f7f7f7;
+  }
+  .nav > li input:focus {
+    outline: none;
+    border-color: white;
+  }
+  .nav > li.search i {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    color: #fff;
+    font-size: 17px;
+  }
+  .dropdown i {
+    position: relative;
+    top: 5px;
+    font-size: 13pt;
+  }
+}
+
+@media only screen and (max-width: 1424px) {
+  .nav {
+    font-size: 9pt;
+  }
+  .nav .column h3{
+    font-size: 9pt;
+  }
+  .forHeaderMenu {
+    right: 0;
+  }
+}
+// End it
+.forMobileHeader {
+  background-color: #029fc8 !important;
+  font-size: 18px;
+}
+.for-service-owner {
+  padding: 0 0 !important;
+}
+

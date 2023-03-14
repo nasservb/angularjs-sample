@@ -1,0 +1,40 @@
+ 
+.afs-add-place {
+    padding: 8px 6px;
+    text-align: center;
+    text-decoration: none;
+}
+.afs-add-place {
+	h5 { 
+	    font-weight: 500;    
+	    font-size: 14px;
+	    font-family: IRANSans,sans-serif;
+	    padding: 9px 0;
+	} 
+	a{
+		text-decoration: none;
+	}
+	i {
+		text-align: center;
+		font-size: 30px !important;		
+		position: relative;
+		top: 7px;
+	}
+	ul{
+		list-style: none;
+		padding: 0;
+	}
+	li{
+		background-color: #fff;
+		border-radius: 3px;
+		text-align: right;
+		padding-right: 10%;
+		line-height: 35px;
+	}
+	li:hover{
+		background-color: #78909c;
+		color:#fff
+	}
+	
+}
+

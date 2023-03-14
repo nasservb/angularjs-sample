@@ -1,0 +1,77 @@
+<button class="mdl-button afs-more mdl-button--icon" (click)="cardMenuHandler()">
+  <i class="material-icons">keyboard_arrow_down</i>
+</button>
+
+<ul class="afs-dropdown-menu" [hidden]="!opened">
+  <li class="mdl-menu__item" *ngIf="options.indexOf('edit') !== -1 && entity.owner_guid == session.getLoggedInUser().guid || session.isAdmin()" (click)="selectOption('edit')" i18n="@@M__ACTION__EDIT">ویرایش</li>
+  <li class="mdl-menu__item" *ngIf="options.indexOf('share') !== -1" (click)="share()" i18n="@@M__ACTION__SHARE">اشتراک گزاری</li>
+   
+  <!-- FEATURE -->
+  <ng-container *ngIf="options.indexOf('feature') !== -1">
+    <li class="mdl-menu__item" *ngIf="!entity.featured && session.isAdmin()" (click)="feature()" i18n="@@M__ACTION__FEATURE">برگزیده</li>
+    <li class="mdl-menu__item" *ngIf="entity.featured && session.isAdmin()" (click)="unFeature()" i18n="@@COMMON__POST_MENU__UNFEATURE">برگزیده نباشد</li>
+  </ng-container>
+  <!-- MONETIZE -->
+  <ng-container *ngIf="options.indexOf('monetize') !== -1">
+    <li class="mdl-menu__item" *ngIf="!entity.monetized && session.isAdmin()" (click)="monetize()" i18n="@@COMMON__POST_MENU__MONETIZE">Monetize</li>
+    <li class="mdl-menu__item" *ngIf="entity.monetized && session.isAdmin()" (click)="unMonetize()" i18n="@@COMMON__POST_MENU__UNMONETIZE">un-Monetize</li>
+  </ng-container>
+  <!-- SUBSCRIBE -->
+  <ng-container *ngIf="options.indexOf('subscribe') !== -1">
+    <li class="mdl-menu__item" *ngIf="((entity.type === 'user' && !entity.subscribed && session.getLoggedInUser().guid !== entity.guid) || (entity.type !== 'user' && !entity.ownerObj.subscribed && entity.ownerObj.guid !== session.getLoggedInUser().guid))" (click)="subscribe()" i18n="@@M__ACTION__SUBSCRIBE">دنبال کردن</li>
+    <li class="mdl-menu__item" *ngIf="((entity.type === 'user' && entity.subscribed && session.getLoggedInUser().guid !== entity.guid) || (entity.type !== 'user' && entity.ownerObj.subscribed && entity.ownerObj.guid !== session.getLoggedInUser().guid))" (click)="unSubscribe()" i18n="@@COMMON__POST_MENU__UNSUBSCRIBE">دنبال نکردن</li>
+  </ng-container>
+  <!-- DELETE -->
+  <li class="mdl-menu__item" *ngIf="options.indexOf('delete') !== -1 && entity.owner_guid == session.getLoggedInUser().guid || session.isAdmin() || canDelete" (click)="deleteToggle = true" i18n="@@M__ACTION__DELETE">حذف</li>
+  <!-- REPORT -->
+  <li class="mdl-menu__item" *ngIf="options.indexOf('report') !== -1 && entity.owner_guid != session.getLoggedInUser().guid" (click)="report()" i18n="Report as notify something@@M__ACTION__REPORT">گزارش</li>
+  <!-- NOTIFICATIONS -->
+  <ng-container *ngIf="options.indexOf('mute') !== -1">
+    <li class="mdl-menu__item" *ngIf="!asyncMute" disabled i18n="@@COMMON__POST_MENU__MUTE_NOTIFICATIONS">مسدود کردن اعلانات</li>
+    <li class="mdl-menu__item" *ngIf="asyncMute && !entity['is:muted']" (click)="mute()" i18n="@@COMMON__POST_MENU__MUTE_NOTIFICATIONS">مسدود کردن اعلانات</li>
+    <li class="mdl-menu__item" *ngIf="asyncMute && entity['is:muted']" (click)="unmute()" i18n="@@COMMON__POST_MENU__UNMUTE_NOTIFICATIONS">بازکردن اعلانات</li>
+  </ng-container>
+  <!-- BLOCK -->
+  <ng-container *ngIf="options.indexOf('block') !== -1 && entity.ownerObj.guid != session.getLoggedInUser().guid ">
+    <li class="mdl-menu__item"  *ngIf="asyncBlockInProgress" disabled>Block/Unblock</li>
+    <li class="mdl-menu__item" *ngIf="!asyncBlockInProgress && !asyncBlock" (click)="block()" i18n>مسدود کردن کاربر</li>
+    <li class="mdl-menu__item" *ngIf="!asyncBlockInProgress && asyncBlock" (click)="unBlock()" i18n>مسدود نکردن کاربر</li>
+  </ng-container>
+
+  <!-- INJECTED POST ACTIONS -->
+  <div (click)="opened = false">
+    <ng-content select="[post-menu]"></ng-content>
+  </div>
+</ul>
+<div class="afs-bg-overlay" (click)="opened = false" [hidden]="!opened"></div>
+
+<m-modal-share *ngIf="shareToggle" [open]="true" (closed)="shareToggle = false; opened = false;" [url]="entity.url" [embed]="entity"></m-modal-share>
+<m-modal-confirm *ngIf="deleteToggle"
+  [open]="true"
+  [closeAfterAction]=true
+  (closed)="deleteToggle = false"
+  (actioned)="delete($event)"
+  yesButton="Delete permanently"
+  i18n-yesButton="@@M__COMMON__DELETE_PERMANENTLY"
+>
+  <p confirm-message>
+    <!-- i18n: @@COMMON__POST_MENU__DELETE_MODAL_MESSAGE -->آیا برای حذف این مورد اطمینان دارید . حذف بزگشت پذیر نیست.<!-- /i18n -->
+    <span *ngIf="entity.entity_guid && (entity.custom_type == 'batch' || entity.custom_type == 'video')">
+      <br><br>
+      <b i18n="@@COMMON__POST_MENU__DELETE_MODAL_ATTACHMENT_MESSAGE">This action will also delete the attached media from your gallery.</b>
+    </span>
+  </p>
+  <p confirm-success-message>
+    <!-- i18n: @@COMMON__POST_MENU__DELETE_CONFIRMATION_MESSAGE -->این مورد حذف شده است.<!-- /i18n -->
+  </p>
+</m-modal-confirm>
+
+<m-modal [open]="true" (closed)="onModalClose($event)" *ngIf="featureToggle">
+  <div class="m-button-feature-modal">
+    <select [(ngModel)]="category">
+      <option *ngFor="let category of categories" [value]="category.id">{{category.label}}</option>
+    </select>
+
+    <button class="mdl-button mdl-button--colored" (click)="feature()">برگزیده</button>
+  </div>
+</m-modal>

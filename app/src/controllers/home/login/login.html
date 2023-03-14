@@ -1,0 +1,22 @@
+<section class="m-video-banner">
+  <div class="video" style="background-image: url('assets/logos/back.jpg')">
+    
+  </div>
+  <div class="overlay overlay--0.6">
+
+    <div class="" style="max-width:400px">
+      <div class="mdl-color-text--white">
+        <h1 i18n="" style="text-align: center;font-size: 18pt;font-weight: normal;">ورود به شبکه آی تیمچه</h1>
+      </div>
+      <afs-form-login (done)="loggedin()" (doneRegistered)="registered()"></afs-form-login>
+    </div>
+
+    <div class="" style="max-width:400px">
+      <div class="mdl-color-text--white">
+        <h2 i18n="" style="text-align: center;font-size: 18pt;font-weight: normal;">با عضویت در شبکه آی تیمچه پروفایل خود را ایجاد نمایید</h2>
+      </div>
+      <afs-form-register [referrer]="referrer" (done)="registered()"></afs-form-register>
+    </div>
+
+  </div>
+</section>

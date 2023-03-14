@@ -1,0 +1,181 @@
+<!-- START: Actions -->
+<div class="mdl-card mdl-shadow--2dp">
+
+  <div class="mdl-card__actions">
+    <div class="afs-error mdl-color--red mdl-color-text--white" [hidden]="!error">{{error}}</div>
+
+    <button class="mdl-button mdl-button--colored"
+      [ngClass]="{'mdl-button--raised': changed}"
+      
+      (click)="save()"
+      style="float:right"
+      >
+      <!-- i18n -->ذخیره<!-- /i18n -->
+    </button>
+    
+  </div>
+  <div id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate" [hidden]="!inProgress"></div>
+</div>
+
+<!-- START: NAME -->
+<div class="mdl-card mdl-shadow--2dp m-settings--name">
+
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text" i18n>نام نمایش داده شده</h2>
+  </div>
+
+  <div class="mdl-card__supporting-text">
+
+      <input class="m-input"
+        type="name"
+        id="name"
+        name="name"
+        [(ngModel)]="name"
+        (keyup)="change()"
+        />
+
+  </div>
+</div>
+<!-- END: NAME -->
+
+<!-- START: PASSWORD -->
+<div class="mdl-card mdl-shadow--2dp m-settings--password">
+
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text" i18n>تغییر کلمه عبور</h2>
+  </div>
+
+  <div class="mdl-card__supporting-text">
+
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" [mdlTextfield]>
+      <input class="mdl-textfield__input"
+        type="password"
+        id="password"
+        name="password"
+        [(ngModel)]="password"
+        (keyup)="change()"
+        />
+      <label class="mdl-textfield__label" for="password" i18n>کلمه عبور فعلی خود را وارد نمایید</label>
+    </div>
+
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" [mdlTextfield]>
+      <input class="mdl-textfield__input"
+        type="password"
+        id="password1"
+        name="password1"
+        [(ngModel)]="password1"
+        [disabled]="!password"
+        (keyup)="change()"
+        />
+      <label class="mdl-textfield__label" for="password1" i18n>کلمه عبور جدید خود را وارد نمایید.</label>
+    </div>
+
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" [mdlTextfield]>
+      <input class="mdl-textfield__input"
+        type="password"
+        id="password2"
+        name="password2"
+        [(ngModel)]="password2"
+        [disabled]="!password"
+        (keyup)="change()"
+        />
+      <label class="mdl-textfield__label" for="password2" i18n>کلمه جدید خود را دوباره وارد نمایید.</label>
+    </div>
+  </div>
+</div>
+<!-- END: PASSWORD -->
+
+<!-- START: CATEGORIES -->
+<div class="mdl-card mdl-shadow--2dp m-settings--categories">
+
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text" i18n>علاقه مندی ها</h2>
+  </div>
+
+  <div class="mdl-card__supporting-text">
+    <ul name="categories" class="afs-settings--list">
+      <li class="afs-settings--list-item"
+          *ngFor="let category of categories" [value]="category.id"
+          [class.selected]="category.selected"
+          (click)="onCategoryClick(category)">
+
+        {{ category.label }}
+
+      </li>
+    </ul>
+  </div>
+</div>
+<!-- END: CATEGORIES -->
+
+<!-- START: EMAIL -->
+<div class="mdl-card mdl-shadow--2dp m-settings--email">
+
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text" i18n>تنظیمات ایمیل</h2>
+  </div>
+  <div class="mdl-card__supporting-text">
+    <input class="m-input"
+      type="email"
+      id="email"
+      [(ngModel)]="email"
+      (keyup)="change()"
+      />
+  </div>
+  <div class="mdl-card__supporting-text">
+    <input type="checkbox"
+      id="flag_mails"
+      (click)="change()"
+      name="enabled_emails"
+      [(ngModel)]="enabled_mails"
+      />
+      <i class="material-icons m-material-icons-inline mdl-color-text--red-500">email</i>
+      <label for="flag_mature">
+          <!-- i18n -->دریافت ایمیل<!-- /i18n -->
+      </label>
+  </div>
+
+</div>
+<!-- END: EMAIL -->
+
+<!-- START: FB connect -->
+<div class="mdl-card mdl-shadow--2dp m-settings--facebook" *ngIf="thirdpartynetworks.hasIntegration('facebook')">
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text" i18n>فیسبوک</h2>
+  </div>
+  <div class="mdl-card__supporting-text" *ngIf="minds.user.signup_method == 'facebook'">
+    <button class="mdl-button mdl-button--raised mdl-button--accent" (click)="removeFbLogin()" [disabled]="thirdpartynetworks.inProgress">
+      <!-- i18n -->لغو ورود به فیس بوک<!-- /i18n -->
+    </button>
+  </div>
+  <div class="mdl-card__supporting-text" *ngIf="thirdpartynetworks.isConnected('facebook')">
+    <button class="mdl-button mdl-button--raised mdl-button--accent" (click)="removeFb()" [disabled]="thirdpartynetworks.inProgress">
+      <!-- i18n -->قطع ارتباط با فیسبوک<!-- /i18n -->
+    </button>
+  </div>
+  <div class="mdl-card__supporting-text" *ngIf="!thirdpartynetworks.isConnected('facebook')">
+    <button class="mdl-button mdl-button--raised mdl-button--accent" (click)="connectFb()" [disabled]="thirdpartynetworks.inProgress">
+      <!-- i18n -->برقراری ارتباط با فیسبوک<!-- /i18n -->
+    </button>
+  </div>
+</div>
+<!-- END: FB connect -->
+
+<!-- START: Tw connect -->
+<div class="mdl-card mdl-shadow--2dp m-settings--twitter" *ngIf="thirdpartynetworks.hasIntegration('twitter')">
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text" i18n>توییتر</h2>
+  </div>
+  <div class="mdl-card__supporting-text" *ngIf="thirdpartynetworks.isConnected('twitter')">
+    <button class="mdl-button mdl-button--raised mdl-button--accent" (click)="removeTw()" [disabled]="thirdpartynetworks.inProgress">
+      <!-- i18n -->قطع ارتباط از توییتر<!-- /i18n -->
+    </button>
+    <!-- i18n -->Connected as @{{ thirdpartynetworks.getStatusKey('twitter', 'username') }}<!-- /i18n -->
+  </div>
+  <div class="mdl-card__supporting-text" *ngIf="!thirdpartynetworks.isConnected('twitter')">
+    <button class="mdl-button mdl-button--raised mdl-button--accent" (click)="connectTw()" [disabled]="thirdpartynetworks.inProgress">
+      <!-- i18n -->برقراری ارتباط با توییتر<!-- /i18n -->
+    </button>
+  </div>
+</div>
+<!-- END: Tw connect -->
+

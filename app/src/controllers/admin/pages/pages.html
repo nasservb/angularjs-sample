@@ -1,0 +1,65 @@
+<header>
+  <afs-banner
+    [src]="'fs/v1/pages/' + page.path"
+    [top]="page.headerTop"
+    [editMode]="true"
+    (added)="setHeader($event)">
+  </afs-banner>
+</header>
+
+<div class="mdl-grid m-admin-pages" style="max-width:990px">
+
+  <div class="mdl-cell mdl-cell--4-col">
+      <ul class="m-content-sidebar-nav">
+          <li class="m-content-sidebar-nav-item">
+            <a (click)="newPage()" [ngClass]="{'is-active': !page.path && page.subtype !== 'link' }">
+              <!-- i18n -->افزودن صفحه جدید<!-- /i18n -->
+            </a>
+          </li>
+          <li class="m-content-sidebar-nav-item">
+            <a (click)="newLink()">
+              <!-- i18n -->افزودن لینک جدید<!-- /i18n -->
+            </a>
+          </li>
+          <li class="m-content-sidebar-nav-item" *ngFor="let p of pages">
+            <a (click)="setPage(p)" [ngClass]="{'is-active': p.path == page.path }">
+              {{p.title}}
+              <i *ngIf="p.subtype == 'link'" class="material-icons m-material-icons-inline-text mdl-color-text--blue-grey-300">link</i>
+            </a>
+          </li>
+      </ul>
+  </div>
+
+  <div [hidden]="page.subtype !== 'page'" class="mdl-cell mdl-cell--8-col m-form">
+      <input type="text" class="m-h1-input" name="title" [(ngModel)]="page.title"/>
+
+      <div class="m-admin-pages-path">
+      /p/<input type="text" class="m-form-input" name="path" [(ngModel)]="page.path"/>
+      </div>
+      <afs-tinymce [(content)]="page.body" [reset]="page.path"></afs-tinymce>
+
+      <div class="m-form-actions">
+        <button class="mdl-button mdl-button--colored mdl-button--raised" (click)="save(page, true)" [hidden]="status == 'saving'" i18n>ذخیره و انتشار</button>
+        <button class="mdl-button mdl-button--colored mdl-button--raised" (click)="false" [hidden]="status != 'saving'" i18n>درحال ذخیره کردن</button>
+
+        <button class="mdl-button mdl-button--colored mdl-color-text--red" (click)="delete(page)" i18n>حذف</button>
+      </div>
+  </div>
+
+  <div [hidden]="page.subtype !== 'link'" class="mdl-cell mdl-cell--8-col m-form">
+      <input type="text" class="m-h1-input" name="title" [(ngModel)]="page.title"/>
+
+      <div class="m-admin-pages-link-path">
+        <label for="" i18n>URL (relative or absolute):</label>
+        <input type="text" class="m-form-input" name="path" [(ngModel)]="page.path"/>
+      </div>
+
+      <div class="m-form-actions">
+        <button class="mdl-button mdl-button--colored mdl-button--raised" (click)="save(page, true)" [hidden]="status == 'saving'" i18n>ذخیره و انتشار</button>
+        <button class="mdl-button mdl-button--colored mdl-button--raised" (click)="false" [hidden]="status != 'saving'" i18n>درحال ذخیره کردن</button>
+
+        <button class="mdl-button mdl-button--colored mdl-color-text--red" (click)="delete(page)" i18n>حذف</button>
+      </div>
+  </div>
+
+</div>

@@ -1,0 +1,168 @@
+<header *ngIf="service">
+    <afs-banner
+            [object]="service"
+            editMode="true"
+            (added)="add_banner($event)"
+            [done]="banner_prompt"
+    ></afs-banner>
+</header>
+<div class="mdl-grid services-grid" style="max-width:90%" *ngIf="error">
+    <h1>{{error}}</h1>
+</div>
+<form (submit)="save()" class="mdl-grid services-grid m-service-container mdl-color--white" style="max-width:90%" *ngIf="service.guid">
+    <div class="mdl-grid register-service" style="width: 100%">
+        <div class="mdl-cell mdl-cell--12-col mdl-textfield mdl-js-textfield for-service-owner">
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect"  (click)="onSelectionChange(1)">
+                <input type="radio"
+                       class="mdl-radio__button"
+                       name="owner"
+                       value="1"
+                       id="service-owner-1"
+                />
+                <span class="mdl-radio__label">این کسب و کار متعلق به دیگران است</span>
+            </label>
+        </div>
+        <div class="mdl-cell mdl-cell--12-col mdl-textfield mdl-js-textfield for-service-owner">
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" (click)="onSelectionChange(2)">
+                <input type="radio"
+                       class="mdl-radio__button"
+                       name="owner"
+                       value="2"
+                       id="service-owner-2"
+                />
+                <span class="mdl-radio__label">این کسب و کار متعلق به من است</span>
+            </label>
+        </div>
+        <div class="mdl-cell mdl-cell--12-col mdl-textfield mdl-js-textfield">
+            <i class="material-icons">contacts</i>
+            <afs-textarea class="mdl-textfield__input" type="text" id="title"
+                          name="title"
+                          [(mModel)]="service.title"
+                          placeholder="عنوان کسب و کار"
+            ></afs-textarea>
+        </div>
+        <div class="mdl-cell mdl-cell--12-col  mdl-textfield mdl-js-textfield">
+            <i class="material-icons">description</i>
+            <afs-textarea
+                    id="description"
+                    name="description"
+                    [(mModel)]="service.description"
+                    class="mdl-textfield__input"
+                    placeholder="توضیح و خدمات کسب و کار"
+            ></afs-textarea>
+        </div>
+        <div class="mdl-cell mdl-cell--12-col mdl-textfield mdl-js-textfield">
+            <i class="material-icons">phone</i>
+            <afs-textarea class="mdl-textfield__input" type="text" id="phone"
+                          name="phone"
+                          [(mModel)]="service.phone"
+                          placeholder="شماره تلفن ثابت"
+            ></afs-textarea>
+        </div>
+        <div class="mdl-cell mdl-cell--12-col mdl-textfield mdl-js-textfield">
+            <i class="material-icons">smartphone</i>
+            <afs-textarea class="mdl-textfield__input" type="text" id="mobile"
+                          name="mobile"
+                          [(mModel)]="service.mobile"
+                          placeholder="شماره تلفن همراه"
+            ></afs-textarea>
+        </div>
+        <div class="mdl-cell mdl-cell--12-col  mdl-textfield mdl-js-textfield">
+            <i class="material-icons">map</i>
+            <afs-textarea class="mdl-textfield__input"
+                          id="address"
+                          name="address"
+                          [(mModel)]="service.address"
+                          placeholder="آدرس"
+            ></afs-textarea>
+        </div>
+        <div class="m-category-info">
+            <i class="material-icons">label</i>دسته بندی
+            <select name="categories[]" id="categories" 
+                    class="mdl-color-text--blue-grey-300 m-form-select select2" multiple="multiple">
+                <option *ngFor="let c of categories" [value]="c.id"  [selected]="(service.categories.indexOf(c.id) > -1)  "> {{c.label}}</option>
+            </select>
+        </div>
+        <div class="mdl-cell mdl-cell--12-col mdl-textfield mdl-js-textfield">
+            <i class="material-icons">photo_camera</i>
+            <afs-textarea class="mdl-textfield__input" type="text" id="instagram"
+                          name="instagram"
+                          [(mModel)]="service.instagram"
+                          placeholder="آدرس اینستاگرام"
+            ></afs-textarea>
+        </div>
+        <div class="mdl-cell mdl-cell--12-col mdl-textfield mdl-js-textfield">
+            <i class="material-icons">send</i>
+            <afs-textarea class="mdl-textfield__input" type="text" id="telegram"
+                          name="telegram"
+                          [(mModel)]="service.telegram"
+                          placeholder="آدرس تلگرام"
+            ></afs-textarea>
+        </div>
+        <div class="mdl-cell mdl-cell--12-col mdl-textfield mdl-js-textfield">
+            <i class="material-icons">web</i>
+            <afs-textarea class="mdl-textfield__input" type="text" id="website"
+                          name="website"
+                          [(mModel)]="service.website"
+                          placeholder="وب سایت"
+            ></afs-textarea>
+        </div>
+    </div>
+
+    انتخاب موقعیت روی نقشه
+    <div id="mapContainer" style="height: 300px;width:90%"></div>
+
+    <input type="hidden" id="latitude" value="{{service.latitude}}" />
+    <input type="hidden" id="longitude" value="{{service.longitude}}" />
+
+    <div class="mdl-cell mdl-cell--12-col">
+        <button type="submit" class="m-button m-button--text m-button--draft"
+                *ngIf="!service.published" [disabled]="!canSave || pendingUploads.length !== 0 || !validThreshold"
+                i18n="@@BLOGS__EDIT__SAVE_DRAFT_ACTION">ذخیره پیشفرض
+        </button>
+        <button type="submit" class="m-button m-button--text m-button--submit" (click)="service.published = 1"
+                [disabled]="!canSave || pendingUploads.length !== 0 || !validThreshold"
+                i18n="@@BLOGS__EDIT__PUBLISH_ACTION">ذخیره و انتشار
+        </button>
+        <div *ngIf="inProgress" class="m-wire--creator--submit-label mdl-spinner mdl-js-spinner is-active" [mdl]></div>
+    </div>
+</form>
+<div class="mdl-grid services-grid m-service-container mdl-color--white" style="max-width:90%">
+
+    <div class="mdl-cell mdl-cell--8-col">
+        تصاویر
+        <form class="mdl-card">
+            <div class="mdl-card__actions" style="display:flex;">
+                <div class="upload-button">
+                    <button class="mdl-button mdl-button--raised">
+                        <i class="material-icons">attachment</i>
+                        <span i18n>اضافه کردن فایل</span>
+                    </button>
+                    <input
+                            type="file"
+                            id="file"
+                            #file
+                            (change)="add(file); file.value = '';"
+                            multiple
+                            accept=""/>
+                </div>
+            </div>
+        </form>
+
+        <div class="mdl-card mdl-shadow--2dp m-upload" *ngFor="let upload of uploads; let i = index">
+            <div class="mdl-card__title m-capture-edit-container ">
+                نام تصویر <input
+                    type="text"
+                    name="title"
+                    [(ngModel)]="upload.title"
+                    (change)="modify(i)"
+            />
+            </div>
+            <div class="mdl-progress mdl-js-progress"
+                 [mdlUpload]
+                 [progress]="upload.progress"
+                 [ngClass]="{'failed': upload.state == 'failed', 'complete': upload.state == 'complete'}"
+            ></div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,39 @@
+<div class="mdl-tabs__tab-bar">
+  <a [routerLink]="['/admin/media', _filter, 'albums']" class="mdl-tabs__tab" [ngClass]="{'is-active': _type == 'albums' || _type == 'all'}" [hidden]="_filter != 'owner'" i18n>آلبوم ها</a>
+    <a [routerLink]="['/admin/media', { type: 'activities'}]" class="mdl-tabs__tab" [ngClass]="{'is-active': _type == 'activities' || _type == 'all'}" i18n>فعالیت ها</a>
+    <a [routerLink]="['/admin/media', { type: 'videos'}]" class="mdl-tabs__tab" [ngClass]="{'is-active': _type == 'videos' || _type == 'all'}" i18n>ویدئوها</a>
+    <a [routerLink]="['/admin/media', { type: 'images'}]" class="mdl-tabs__tab" [ngClass]="{'is-active': _type == 'images' || _type == 'all'}" i18n>تصاویر</a>
+     <a [routerLink]="['/admin/media', { type: 'blog'}]" class="mdl-tabs__tab" [ngClass]="{'is-active': _type == 'blog' || _type == 'all'}" i18n>بلاگ</a>
+      <a [routerLink]="['/admin/media', { type: 'service'}]" class="mdl-tabs__tab" [ngClass]="{'is-active': _type == 'service' || _type == 'all'}" i18n>کسب و کار</a>
+    <a [routerLink]="['/admin/media', { type: 'channels'}]" class="mdl-tabs__tab" [ngClass]="{'is-active': _type == 'channels' || _type == 'all'}" i18n>پروفایل ها</a>
+
+    <a [routerLink]="['/admin/media', { type: 'group'}]" class="mdl-tabs__tab" [ngClass]="{'is-active': _type == 'group' || _type == 'all'}" i18n>گروه</a>
+
+</div>
+
+<div class="mdl-grid " style="max-width:990px">
+
+   
+      <div class="mdl-cell mdl-cell--4-col  m-discovery-wrapper" *ngFor="let entity of entities">
+
+        <afs-card-video [object]="entity" *ngIf="entity.subtype == 'video'" class="mdl-card mdl-shadow--2dp"></afs-card-video>
+        <afs-card-image [object]="entity" *ngIf="entity.subtype == 'image'" class="mdl-card mdl-shadow--2dp"></afs-card-image>
+        <afs-card-blog [object]="entity" *ngIf="entity.subtype == 'blog'" class="mdl-card mdl-shadow--2dp"></afs-card-blog>
+        <afs-card-service [group]="entity" *ngIf="entity.subtype == 'service'" class="mdl-card mdl-shadow--2dp"></afs-card-service>
+        <afs-activity [object]="entity" *ngIf="entity.type == 'activity'" class="mdl-card mdl-shadow--2dp"></afs-activity>
+        <afs-card-group [group]="entity" *ngIf="entity.type == 'group'" class="mdl-card mdl-shadow--2dp"></afs-card-group>
+
+        <!-- START: User Only -->
+        <afs-card-user [object]="entity" *ngIf="entity.type == 'user'" class="mdl-card mdl-shadow--2dp"></afs-card-user>
+        <!-- END: User Only -->
+      </div>
+    
+
+    <infinite-scroll
+        distance="25%"
+        (load)="load()"
+        [moreData]="moreData"
+        [inProgress]="inProgress">
+    </infinite-scroll>
+
+</div>

@@ -1,0 +1,18 @@
+<afs-topbar class="afs-noshadow mdl-color--white mdl-color-text--grey-600"></afs-topbar>
+
+<afs-sidebar class="mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
+    <afs-sidebar-navigation class="mdl-navigation mdl-color--blue-grey-800"></afs-sidebar-navigation>
+</afs-sidebar>
+
+<afs-body class="mdl-color--grey-100">
+  <router-outlet></router-outlet>
+</afs-body>
+
+<afs-footer></afs-footer>
+<afs-messenger *ngIf="minds.LoggedIn"></afs-messenger>
+
+
+<m-modal-signup></m-modal-signup>
+<m-hovercard-popup></m-hovercard-popup>
+
+<m-overlay-modal></m-overlay-modal>

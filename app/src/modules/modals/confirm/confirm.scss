@@ -1,0 +1,33 @@
+m-modal-confirm {
+
+  m-modal {    
+    .m-modal-container{
+      min-width: 340px;
+      min-height: 0;
+      
+      .mdl-card {
+        min-height: 0;
+      }
+    }
+  }
+  
+  .m-modal-confirm-title {
+    font-weight: bold;
+    text-align: center;
+    margin: 0;
+    font-size: 21px;
+  }
+
+  .m-modal-confirm-body {
+    padding: ($afs-padding * 2) (24px + ($afs-padding * 4)) ($afs-padding * 2) ($afs-padding * 2);
+  }
+
+  .m-modal-confirm-buttons {
+    margin-top: $afs-padding * 2;
+    
+    > button + button {
+      margin-left: $afs-padding;
+    }
+  }
+
+}

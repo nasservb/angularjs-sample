@@ -1,0 +1,171 @@
+@import "defaults";
+
+.afs-wallet-points{
+  width: auto;
+  min-height: 0;
+
+  h2{
+    color:#FFF;
+  }
+}
+
+.afs-quote-card{
+  width:100%;
+  min-height:0;
+  border-radius:0;
+
+  margin-bottom:$afs-margin*2;
+
+  .afs-boost-points-input{
+    input{
+      background: rgba(255,255,255,0.3);
+      color:#DDD;
+    }
+    input:disabled{
+      background: rgba(255,255,255,0.3);
+    }
+  }
+}
+
+.m-points-balance{
+  padding:$afs-padding*4 $afs-padding;
+
+  i{
+    width: 100%;
+    font-size: 100px;
+    text-align: center;
+  }
+  h2{
+    text-align:center;
+  }
+
+}
+
+.afs-purchase-card{
+  width:100%;
+  min-height:0;
+  padding:0;
+  border-radius:0;
+
+  .afs-purchase-vendors{
+    span{
+      font-size:13px;
+      padding:8px;
+      cursor:pointer;
+      text-transform:uppercase;
+
+      &:first-child {
+        padding-left: 0;
+      }
+    }
+  }
+
+  .mdl-grid{
+
+    .mdl-cell{
+      margin:0;
+      padding:0;
+      display: flex;
+      align-items: center;
+      -webkit-align-items: center;
+    }
+  }
+
+  select{
+    padding: 8px 16px;
+    margin-right: 16px;
+    font-size: 16px;
+    -webkit-appearance: none;
+    border: 1px solid #EEE;
+    /* border-right: 1px solid #DDD; */
+    background-color: #FAFAFA;
+    border-radius: 0;
+  }
+}
+
+.afs-purchase-card-confirm{
+  width:100%;
+  min-height:0;
+  margin-top:$afs-margin;
+
+  button {
+    float:right;
+  }
+}
+
+.afs-purchase-recurring-option{
+  padding:16px;
+  label{
+    font-size:12px;
+  }
+  span{
+    font-style:italic;
+    font-size:12px;
+  }
+  .afs-purchase-recurring-cancel{
+    cursor:pointer;
+    font-weigth:bold;
+  }
+}
+
+.afs-transaction-card{
+  width:auto;
+  min-height:0;
+  margin-bottom:$afs-padding * 2;
+
+  .afs-transaction-points{
+    font-size:30px;
+    .positive{
+      color:green;
+    }
+    .negative{
+      color:red;
+    }
+  }
+
+  .afs-transaction-details{
+    display:flex;
+    p{
+      margin:0;
+    }
+    .ts{
+      font-size:11px;
+      padding-left:$afs-padding;
+    }
+  }
+}
+
+
+afs-wallet-transactions {
+  .mdl-tabs__tab-bar {
+    margin-bottom: $afs-padding * 2;
+  }
+}
+
+.m-root-other {
+  font-size: 12px;
+  font-weight: 300;
+  text-align: center;
+  color: #aaa;
+}
+
+.m-root-loader {
+  text-align: center;
+}
+
+.m-wallet-local-settings {
+  margin-top: $afs-padding;
+  padding: $afs-padding;
+}
+
+.m-wallet--boost-ads {
+  margin-top: $afs-padding * 2;
+}
+
+.m-wallet--wire-link{
+  i {
+    width: 25px;
+    text-align: center;
+  }
+}
+

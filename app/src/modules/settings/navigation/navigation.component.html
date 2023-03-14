@@ -1,0 +1,33 @@
+<ul class="mdl-card mdl-color--white mdl-shadow--2dp afs-settings-nav">
+  <li class="afs-settings-item">
+    <a routerLink="/settings/general" routerLinkActive="selected" class="mdl-color-text--blue-grey-500">
+      <!-- i18n -->تنظیمات<!-- /i18n -->
+    </a>
+  </li>
+  <!--<li class="afs-settings-item">
+    <a [routerLink]="['/settings/statistics']" class ="mdl-color-text--blue-grey-500" >
+      Account statistics
+    </a>
+  </li>-->
+  <li class="afs-settings-item">
+    <a routerLink="/settings/disable" routerLinkActive="selected" class="mdl-color-text--blue-grey-500">
+      <!-- i18n -->غیرفعال کردن پروفایل<!-- /i18n -->
+    </a>
+  </li>
+  <li class="afs-settings-item">
+    <a routerLink="/settings/twoFactor" routerLinkActive="selected" class="mdl-color-text--blue-grey-500">
+      <!-- i18n -->تغییر شماره تلفن همراه<!-- /i18n -->
+    </a>
+  </li>
+  <li class="afs-settings-item">
+    <a routerLink="/settings/reported-content" routerLinkActive="selected" class="mdl-color-text--blue-grey-500">
+      <!-- i18n -->محتوای گزارش شده<!-- /i18n -->
+    </a>
+  </li>
+  <li class="afs-settings-item">
+    <m-modal-invite #invite [open]="invite.open" (closed)="invite.open = false"></m-modal-invite>
+    <a (click)="invite.open = true" class="mdl-color-text--blue-grey-500">
+        <!-- i18n -->دوستان خود را دعوت کنید<!-- /i18n -->
+    </a>
+  </li>
+</ul>

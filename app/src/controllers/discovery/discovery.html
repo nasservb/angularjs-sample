@@ -1,0 +1,43 @@
+<div class="mdl-tabs__tab-bar">
+    <a [routerLink]="['/discovery', _filter, 'albums']" class="mdl-tabs__tab" [ngClass]="{'is-active': _type == 'albums' || _type == 'all'}" [hidden]="_filter != 'owner'" i18n>آلبوم ها</a>
+    <a [routerLink]="['/discovery', _filter, 'videos']" class="mdl-tabs__tab" [ngClass]="{'is-active': _type == 'videos' || _type == 'all'}" i18n>ویدئو ها</a>
+    <a [routerLink]="['/discovery', _filter, 'images']" class="mdl-tabs__tab" [ngClass]="{'is-active': _type == 'images' || _type == 'all'}" i18n>تصاویر</a>
+    <a [routerLink]="['/discovery', _filter, 'channels']" class="mdl-tabs__tab" [ngClass]="{'is-active': _type == 'channels' || _type == 'all'}" [hidden]="_filter == 'owner' || _owner" i18n>پروفایل ها</a>
+</div>
+
+<div class="mdl-grid m-discovery-{{_filter}} m-discovery-{{_filter}}-{{_type}}" style="max-width:900px">
+
+    <a class="mdl-cell mdl-cell--4-col" [routerLink]="['/capture']" style="text-decoration: none;" [hidden]="_type == 'channels'" >
+      <div class="afs-add-card mdl-card mdl-shadow--2dp mdl-color--blue-grey-400 mdl-color-text--blue-grey-100">
+        <i class="material-icons">file_upload</i>
+        <h3 i18n>آپلود</h3>  
+      </div>
+    </a>
+
+   
+
+    <div class="mdl-cell mdl-cell--4-col m-discovery-wrapper" *ngFor="let entity of entities; let i = index" >
+
+      <afs-card-video [object]="entity" *ngIf="entity.subtype == 'video'" class="mdl-card mdl-shadow--2dp" ></afs-card-video>
+      <afs-card-image [object]="entity" *ngIf="entity.subtype == 'image'" class="mdl-card mdl-shadow--2dp" ></afs-card-image>
+      <afs-card-album [object]="entity" *ngIf="entity.subtype == 'album'" class="mdl-card mdl-shadow--2dp" ></afs-card-album>
+
+      <!-- START: User Only -->
+      <afs-card-user [object]="entity" [avatarSize]="medium" *ngIf="entity.type == 'user'" class="mdl-card mdl-shadow--2dp"></afs-card-user>
+      <!-- END: User Only -->
+
+      
+
+    </div>
+
+    <infinite-scroll
+        distance="25%"
+        (load)="load()"
+        [moreData]="moreData"
+        [inProgress]="inProgress"
+        >
+    </infinite-scroll>
+    <div class="mdl-spinner mdl-js-spinner is-active" [mdl] [hidden]="!inProgress" ></div>
+
+
+</div>

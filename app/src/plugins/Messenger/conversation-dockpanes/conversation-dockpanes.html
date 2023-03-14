@@ -1,0 +1,7 @@
+<afs-messenger-dockpane
+  *ngFor="let conversation of conversations; let i = index"
+  [style.right]="216 + (240 * i)">
+  <afs-messenger-conversation [conversation]="conversation"></afs-messenger-conversation>
+</afs-messenger-dockpane>
+
+<ng-content selector="afs-messenger-dockpane"></ng-content>

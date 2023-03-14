@@ -1,0 +1,41 @@
+<!---
+<div class="mdl-tabs__tab-bar">
+ 
+    <a [routerLink]="['/map', _filter, 'newest']" class="mdl-tabs__tab" [ngClass]="{'is-active': _filter == 'newest'  }" i18n>تازه ها</a>
+    <a [routerLink]="['/map', _filter, 'trending']" class="mdl-tabs__tab" [ngClass]="{'is-active': _filter == 'trending' }" i18n>در حال رشد</a>
+    <a [routerLink]="['/map', _filter, 'featured']" class="mdl-tabs__tab" [ngClass]="{'is-active': _filter == 'featured' }" i18n>برگذیده</a>
+    <a [routerLink]="['/map', _filter, 'owner']" class="mdl-tabs__tab" [ngClass]="{'is-active': _filter == 'owner' }" i18n>مکان های من</a>
+     
+</div>
+-->
+<div class="mdl-grid m-discovery-{{_filter}} m-discovery-{{_filter}}-{{_category}}" style="max-width:90%">
+	<div class="mdl-cell--3-col afs-add-place"> 
+		<a class="mdl-cell " style="text-decoration: none;"   >
+		  <div class=" mdl-card mdl-shadow--2dp mdl-color--blue-grey-400 mdl-color-text--blue-grey-100">	
+			<h5 i18n>ثبت مکان جدید <i class="material-icons">add_location</i> </h5>  
+		  </div>
+		</a>
+		
+		<ul>
+			<li class="place-cat-1"><a ><i class="material-icons">room_service</i>&nbsp;تغذیه و سلامت</a></li>  
+			<li class="place-cat-2"><a ><i class="material-icons">local_mall</i>&nbsp;پوشاک و مد</a></li>
+			<li class="place-cat-3"><a ><i class="material-icons">face</i>&nbsp;آرایشی و زیبایی</a></li>
+			<li class="place-cat-4"><a ><i class="material-icons">devices</i>&nbsp;دیجیتال</a></li>
+			<li class="place-cat-5"><a ><i class="material-icons">directions_car</i>&nbsp;مسکن و خودرو</a></li>
+			<li class="place-cat-6"><a ><i class="material-icons">local_hotel</i>&nbsp;گردشگری</a></li>
+			<li class="place-cat-7"><a ><i class="material-icons">school</i>&nbsp;فرهنگی و آموزشی</a></li>
+			<li class="place-cat-8"><a ><i class="material-icons">flag</i>&nbsp;تولید ایرانی</a></li>
+		</ul>	
+   </div>
+
+    <div class="mdl-cell mdl-cell--9-col m-discovery-wrapper"   >
+
+ 
+<iframe src="/map.html" style="height: 90%;width:100% "></iframe>
+
+
+    </div>
+
+    
+
+</div>

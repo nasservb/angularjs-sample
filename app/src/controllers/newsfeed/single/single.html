@@ -1,0 +1,22 @@
+
+<div class="mdl-grid newsfeed-grid" style="max-width:900px; justify-content: center;">
+
+  <div class="m-error-splash" *ngIf="error && !inProgress">
+    <h3 class="mdl-color-text--red-300">{{error}}</h3>
+    <span class="mdl-color-text--blue-grey-300" i18n>لطفاً دوباره امتحان کنید</span>
+  </div>
+
+  <div class="mdl-cell mdl-cell--8-col">
+    <div class="m--spam-notice mdl-shadow--2dp" *ngIf="activity?.spam">
+      این مطلب به عنوان هرزنامه نشانه گذاری شده است.
+      <ng-container *ngIf="!session.isAdmin()">
+        اگر می خواهید درخواست تجدید نظر کنید، لطفا با ایمیل  contact@iTimche.net  مکاتبه نمایید.
+      </ng-container>
+    </div>
+
+    <div class="afs-list">
+      <afs-activity *ngIf="activity" [object]="activity" [commentsToggle]="true" (delete)="delete(activity)" class="mdl-card mdl-shadow--2dp item"></afs-activity>
+    </div>
+  </div>
+
+</div>

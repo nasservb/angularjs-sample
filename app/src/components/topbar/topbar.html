@@ -1,0 +1,56 @@
+<div (click)="sidebar.open()" class="afs-menu-button mdl-layout__drawer-button">
+    <i class="material-icons">menu</i>
+</div>
+
+<div class="afs-header-row">
+
+    <div class="afs-logo">
+        <a [routerLink]="['/']">
+            <img src="/assets/logos/small.png"/>
+        </a>
+    </div>
+    <div class="forHeaderMenu">
+        <ul class="nav" [innerHTML]="menu">
+            
+       </ul>
+    </div>
+
+    <div class="mdl-layout-spacer"></div>
+
+    <afs-topbar-navigation></afs-topbar-navigation>
+
+    <div class="afs-account" *ngIf="session.isLoggedIn()">
+        <a [routerLink]="['/', session.getLoggedInUser().username]">
+            <img src="/icon/{{session.getLoggedInUser().guid}}/small/{{session.getLoggedInUser().icontime}}" class="mdl-shadow--2dp" />
+        </a>
+    </div>
+
+    <button [hidden]="!session.isLoggedIn()"
+            class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+            id="header-actions" [mdl]
+    >
+        <i class="material-icons">more_vert</i>
+    </button>
+
+    <ul
+            class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
+            for="header-actions"
+            [mdl]
+    >
+        <li class="mdl-menu__item" *ngIf="session.isLoggedIn()" [routerLink]="['/settings/general']" i18n>تنظیمات</li>
+        <li class="mdl-menu__item" *ngIf="session.isLoggedIn()" [routerLink]="['/logout']" i18n>خروج</li>
+    </ul>
+
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" *ngIf="!session.isLoggedIn()" [routerLink]="['/login']">
+        <!-- i18n -->ورود<!-- /i18n -->
+    </button>
+</div>
+
+<div class="m-notifications-toaster" *ngIf="session.isLoggedIn() && notifications">
+    <afs-notification
+            *ngFor="let notification of notifications"
+            class="mdl-card mdl-shadow--4dp item"
+            [notification]="notification"
+            (click)="closeNotification(notification)"
+    ></afs-notification>
+</div>

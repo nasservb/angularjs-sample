@@ -1,0 +1,178 @@
+<!-- Owner block -->
+<!--
+<div *ngIf="activity.deleted != 1">
+-->
+	<div class="mdl-card__supporting-text mdl-color-text--grey-600 m-owner-block" [class.m-owner-block--remind]="activity.remind_object" *ngIf="activity.ownerObj && activity.ownerObj.username && activity.deleted != 1">
+
+		<i class="material-icons selected" *ngIf="activity.remind_object">repeat</i>
+
+		<div class="avatar" [hovercard]="activity.ownerObj.guid">
+			<a [routerLink]="['/', activity.ownerObj.username]">
+				<img [src]="minds.cdn_url + 'icon/' + activity.ownerObj.guid + '/medium/' + activity.ownerObj.icontime" class="mdl-shadow--2dp"/>
+			</a>
+		</div>
+
+		<div class="body">
+			<a [routerLink]="['/', activity.ownerObj.username]">
+				<strong>{{activity.ownerObj.name}}</strong>
+			</a>
+			<a *ngIf="activity.containerObj && activity.containerObj.type == 'group'"
+			   [routerLink]="['/groups/profile', activity.containerObj.guid, 'activity']"
+			   class="mdl-color-text--blue-grey-300">
+				<strong>({{activity.containerObj.name}})</strong>
+			</a>
+			<a [routerLink]="['/newsfeed', activity.guid]" class="permalink" *ngIf="activity.guid && !activity.remind_object">
+				<span>{{ ((activity.time_created*1000)|date:' H:m:s') }} {{ activity.time_created_shamsi }}  </span><span *ngIf="activity.edited" class="m-edited-text" i18n>ویرایش شد</span>
+			</a>
+			<a [routerLink]="['/newsfeed/', activity.entity_guid]" class="permalink"
+			   *ngIf="!activity.guid && activity.entity_guid && !activity.remind_object">
+				<span>{{ ((activity.time_created*1000)|date:' H:m:s') }} {{ activity.time_created_shamsi }}</span><span *ngIf="activity.edited" class="m-edited-text" i18n>ویرایش شد</span>
+			</a>
+		</div>
+
+	</div>
+
+
+	<!-- Rich content -->
+	<div class="m-rich-embed"
+		 *ngIf="activity.perma_url && activity.title"
+		 [ngClass]="{ 'm-mature-content': attachment.shouldBeBlurred(activity), 'm-mature-content-shown': attachment.isForcefullyShown(activity) }">
+		<div class="m-mature-overlay" (click)="activity.mature_visibility = !activity.mature_visibility">
+		</div>
+		<afs-rich-embed [src]="activity" [maxheight]="480"></afs-rich-embed>
+	</div>
+
+	<!-- Messages -->
+
+	<div m-read-more class="mdl-card__supporting-text message m-mature-message" [class.m-activity--message-remind]="activity.remind_object"
+		 [hidden]="!activity.message || editing">
+		<a class="m-mature-text-toggle" (click)="activity.mature_visibility = !activity.mature_visibility"
+		   *ngIf="attachment.shouldBeBlurred(activity) || attachment.isForcefullyShown(activity)"
+		   [ngClass]="{ 'mdl-color-text--red-500': attachment.isForcefullyShown(activity) }">
+			<i class="material-icons m-material-icons-inline">explicit</i>
+		</a>
+
+		<span class="m-mature-message-content forTextJustify" [innerHtml]="activity.message | tags" [ngClass]="{ 'm-mature-text': attachment.shouldBeBlurred(activity) }"
+			  (click)="activity.mature && !activity.mature_visibility ? activity.mature_visibility = !activity.mature_visibility : null">
+	  </span>
+		<m-read-more--button></m-read-more--button>
+	</div>
+
+
+	<m-translate
+			[open]="translateToggle"
+			[entity]="activity"
+			[translateEvent]="translateEvent"
+			(onTranslateInit)="propagateTranslation($event)"
+			(onTranslate)="translateToggle = false"
+			(onTranslateError)="translateToggle = false"
+			#translate
+	></m-translate>
+
+	<div class="afs-editable-container" *ngIf="editing && (!activity.custom_type || (activity.custom_type && !activity.title))">
+		<!-- Please not the intentional single way binding for ngModel, we want to be able to cancel our changes -->
+		<textarea class="mdl-card__supporting-text message" name="message" [ngModel]="activity.message" #messageEdit [autoGrow]></textarea>
+		<button class="mdl-button mdl-button--raised mdl-color--blue-grey-100" (click)="messageEdit.value = activity.message; editing=false;" i18n>انصراف</button>
+		<button class="mdl-button mdl-button--colored mdl-button--raised" (click)="activity.message = messageEdit.value; save();" i18n>ذخیره</button>
+	</div>
+
+
+
+	<div class="mdl-card__supporting-text message" [hidden]="!activity.title || activity.perma_url || editing" [innerHtml]="activity.title | tags"></div>
+	<!-- Translation -->
+	<div *ngIf="translate && translate.translation && translate.translation.translated && translate.translation.title" class="m-translation-wrapper">
+		<div class="mdl-card__supporting-text message" [hidden]="!translate.translation.title">
+			<span [innerHtml]="translate.translation.title | tags"></span>
+		</div>
+	</div>
+	<!-- End translation -->
+
+	<div class="afs-editable-container" *ngIf="editing && activity.custom_type && activity.title">
+		<!-- Please not the intentional single way binding for ngModel, we want to be able to cancel our changes -->
+		<textarea class="mdl-card__supporting-text message" name="title" [ngModel]="activity.title" #titleEdit [autoGrow]></textarea>
+		<m-wire-threshold-input [(threshold)]="activity.wire_threshold"></m-wire-threshold-input>
+		<button class="mdl-button mdl-button--raised mdl-color--blue-grey-100" (click)="titleEdit.value = activity.title; editing=false;" i18n>انصراف</button>
+		<button class="mdl-button mdl-button--colored mdl-button--raised" (click)="activity.title = titleEdit.value; save();" i18n>ذخیره</button>
+	</div>
+
+	<div class="item item-image item-image-video"
+		 [ngClass]="{ 'm-mature-content': attachment.shouldBeBlurred(activity), 'm-mature-content-shown': attachment.isForcefullyShown(activity) }"
+		 *ngIf="activity.custom_type == 'video'">
+
+
+		<afs-video
+				width="100%"
+				height="300px"
+				style="background:#000;"
+				loop="true"
+				controls="true"
+				muted="false"
+				[poster]="activity.custom_data.thumbnail_src"
+				[src]="[{ 'res': '720', 'uri': 'api/v1/media/' + activity.custom_data.guid + '/play', 'type': 'video/mp4' }]"
+				[guid]="activity.custom_data.guid"
+				[playCount]="activity['play:count']"
+				#player>
+			<video-ads [player]="player" *ngIf="activity.monetized"></video-ads>
+		</afs-video>
+	</div>
+
+	<!-- Images -->
+	<div class="item item-image allow-select"
+		 [ngClass]="{ 'm-mature-content': attachment.shouldBeBlurred(activity), 'm-mature-content-shown': attachment.isForcefullyShown(activity) }"
+		 *ngIf="activity.thumbnail_src && !activity.perma_url">
+
+
+		<a [routerLink]="['/media', activity.entity_guid]">
+			<img [src]="activity.thumbnail_src" (error)="activity.thumbnail_src = null">
+		</a>
+	</div>
+
+	<!-- Custom type:: batch -->
+	<div class="item item-image allow-select"
+		 [ngClass]="{ 'm-mature-content': attachment.shouldBeBlurred(activity), 'm-mature-content-shown': attachment.isForcefullyShown(activity) }"
+		 *ngIf="activity.custom_type == 'batch'">
+
+
+		<a [routerLink]="['/media', activity.entity_guid]">
+			<img [src]="activity.custom_data[0].src" style="width:100%"
+				 (error)="activity.custom_data[0].src = '/assets/logos/complete.jpg'"
+				 *ngIf="activity.custom_data"
+			>
+		</a>
+	</div>
+
+	<!-- Reminds -->
+	<div *ngIf="activity.remind_object">
+		<afs-remind [object]="activity.remind_object" [events]="childEventsEmitter"></afs-remind>
+	</div>
+
+	<div class="mdl-card__supporting-text is-boosted" *ngIf="activity.boosted">
+		<i class="material-icons">trending_up</i>
+		<a i18n>Boosted</a>
+	</div>
+
+	<div class="mdl-card__supporting-text mdl-color--white tabs" *ngIf="!hideTabs">
+		<afs-button-thumbs-up [object]="activity"></afs-button-thumbs-up>
+		<afs-button-thumbs-down [object]="activity"></afs-button-thumbs-down>
+		<afs-button-comment [object]="activity" (click)="openComments()"></afs-button-comment>
+		<afs-button-remind [object]="activity"></afs-button-remind>
+	</div>
+
+	<div class="impressions-tag m-activity--metrics" [class.m-activity--metrics-wire]="!session.getLoggedInUser() || session.getLoggedInUser().guid != activity.owner_guid" *ngIf="!hideTabs">
+		<div class="m-activity--metrics-inner">
+			<div class="m-activity--metrics-metric">
+				<i class="material-icons">remove_red_eye</i>
+				<span>{{ activity.impressions | number }}</span>
+			</div>
+		</div>
+	</div>
+
+	<afs-comments  *ngIf="commentsToggle" [object]="activity" [focusOnInit]="true"></afs-comments>
+
+
+
+	<div class="mdl-card__menu mdl-color-text--blue-grey-300" #toggle *ngIf="!hideTabs">
+		<m-post-menu [entity]="activity" [canDelete]="canDelete" [isTranslatable]="isTranslatable" [options]="menuOptions" (optionSelected)="menuOptionSelected($event)"></m-post-menu>
+	</div>
+<!--
+</div>-->

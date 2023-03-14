@@ -1,0 +1,70 @@
+<div class="mdl-card afs-rate afs-block">
+  <div class="afs-avatar" [hovercard]="rate.ownerObj.guid">
+    <a [routerLink]="['/', rate.ownerObj.username]">
+      <img src="{{minds.cdn_url}}icon/{{rate.ownerObj.guid}}/small/{{rate.ownerObj.icontime}}" class="mdl-shadow--2dp"/>
+    </a>
+  </div>
+  <div class="afs-body">
+    <a [routerLink]="['/', rate.ownerObj.username]" class="forUsernameComment username mdl-color-text--blue-grey-500">{{rate.ownerObj.name}} @{{rate.ownerObj.username}}</a>
+    <span class="mdl-color-text--blue-grey-300 afs-rate-span afs-rate-bullet" style="direction: ltr">{{ ((rate.time_created*1000)|date:' H:m:s') }} {{ rate.time_created_shamsi }}</span>
+    <span *ngIf="rate.edited" class="mdl-color-text--blue-grey-300 afs-rate-span m-edited-text" i18n>ویرایش شده</span>
+
+    <div class="mdl-card__menu mdl-color-text--blue-grey-300">
+
+      <button class="mdl-button mdl-button--icon m-rate-carrot"
+        [ngClass]="{ 'm-rate-carrot-collapsed': !toggle.value }"
+        (click)="toggle.value = !toggle.value"
+      >
+        <i class="material-icons">{{ !toggle.value ? 'keyboard_arrow_left' : 'keyboard_arrow_right' }}</i>
+      </button>
+      
+      <ul class="m-ribbon m-ribbon-left forIconComment" [hidden]="!toggle.value" #toggle>
+        <li class="m-ribbon--item"
+          *ngIf="rate.owner_guid == session.getLoggedInUser()?.guid || session.isAdmin()"
+          (click)="editing = !editing; toggle.value = false"
+          title="ویرایش"
+          i18n-title
+        ><i class="material-icons">edit</i></li>
+        <li class="m-ribbon--item"
+          *ngIf="rate.owner_guid == session.getLoggedInUser()?.guid || session.isAdmin() || parent.owner_guid == session.getLoggedInUser()?.guid"
+          (click)="delete(i); toggle.value = false"
+          title="حذف"
+          i18n-title
+        ><i class="material-icons">delete</i></li>
+        
+      </ul>
+      <div class="afs-bg-overlay" (click)="toggle.value = false" [hidden]="!toggle.value"></div>
+
+      
+    </div>
+
+    <p [hidden]="editing" class="rate-box">
+      
+       
+
+       <input disabled  type="range" min="0" max="100" [value]="rate.rate1" tabindex="0" data-upgraded=",MaterialSlider"  >انصاف ({{rate.rate1}})<br><br>
+        <input disabled  type="range" min="0" max="100" [value]="rate.rate2" tabindex="0" data-upgraded=",MaterialSlider"  >صداقت ({{rate.rate2}})<br><br>
+        <input disabled  type="range" min="0" max="100" [value]="rate.rate3" tabindex="0" data-upgraded=",MaterialSlider"  >اخلاق و مشتری مداری ({{rate.rate3}})<br><br>
+        <input disabled  type="range" min="0" max="100" [value]="rate.rate4" tabindex="0" data-upgraded=",MaterialSlider"  >ارزش نسبت به قیمت ({{rate.rate4}})<br>  <br>            
+        <input disabled  type="range" min="0" max="100" [value]="rate.rate5" tabindex="0" data-upgraded=",MaterialSlider"  >کیفیت خدمت ({{rate.rate5}})<br>
+    </p>
+	
+    <!-- Edit mode -->
+
+    <div class="afs-editable-container rate-box" *ngIf="editing">
+      <!-- Please not the intentional single way binding for ngModel, we want to be able to cancel our changes -->
+     
+              <input  type="range" min="0" max="100" [value]="(rate.rate1 || 75)"  tabindex="0" data-upgraded=",MaterialSlider"  id="rate-e-1" (change)="changeRate()">انصاف  <span id="rate-edit-1"></span>  <br><br>
+              <input   type="range" min="0" max="100" [value]="rate.rate2 || 75"  tabindex="0" data-upgraded=",MaterialSlider"  id="rate-e-2" (change)="changeRate()">صداقت  <span id="rate-edit-2"></span>  <br><br>
+              <input   type="range" min="0" max="100" [value]="rate.rate3 || 75"  tabindex="0" data-upgraded=",MaterialSlider"  id="rate-e-3" (change)="changeRate()">اخلاق و مشتری مداری  <span id="rate-edit-3"></span>  <br><br>
+              <input   type="range" min="0" max="100" [value]="rate.rate4 || 75"  tabindex="0" data-upgraded=",MaterialSlider" id="rate-e-4" (change)="changeRate()">ارزش نسبت به قیمت  <span id="rate-edit-4"></span>  <br> <br>             
+              <input   type="range" min="0" max="100" [value]="rate.rate5 || 75"  tabindex="0" data-upgraded=",MaterialSlider" id="rate-e-5" (change)="changeRate()">کیفیت خدمت  <span id="rate-edit-5"></span>  <br>
+ <a class="m-post-button"
+              (click)="save()" >
+                <i class="material-icons">send</i>
+              </a>
+    </div>
+
+
+  </div>
+</div>

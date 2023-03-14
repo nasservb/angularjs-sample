@@ -1,0 +1,60 @@
+<div class="mdl-tabs__tab-bar">
+  <a [routerLink]="['/notifications/all']" class="mdl-tabs__tab"
+    [ngClass]="{ 'is-active': _filter == 'all' || !_filter }"
+  >
+    <i class="material-icons m-icon">notifications</i>
+    <span class="m-full-label" i18n>همه</span>
+  </a>
+  <a [routerLink]="['/notifications/tags']" class="mdl-tabs__tab"
+    [ngClass]="{ 'is-active': _filter == 'tags' }"
+  >
+    <i class="material-icons m-icon">face</i>
+    <span class="m-full-label" i18n>رونوشت ها</span>
+  </a>
+  <a [routerLink]="['/notifications/comments']" class="mdl-tabs__tab"
+    [ngClass]="{ 'is-active': _filter == 'comments' }"
+  >
+    <i class="material-icons m-icon">chat_bubble</i>
+    <span class="m-full-label" i18n>نظرات</span>
+  </a>
+
+  <a [routerLink]="['/notifications/subscriptions']" class="mdl-tabs__tab"
+    [ngClass]="{ 'is-active': _filter == 'subscriptions' }"
+  >
+    <i class="material-icons m-icon">people</i>
+    <span class="m-full-label" i18n>اشتراک ها</span>
+  </a>
+  <a [routerLink]="['/notifications/votes']" class="mdl-tabs__tab"
+    [ngClass]="{ 'is-active': _filter == 'votes' }"
+  >
+    <i class="material-icons m-icon">thumbs_up_down</i>
+    <span class="m-full-label" i18n>امتیازات</span>
+  </a>
+  <a [routerLink]="['/notifications/reminds']" class="mdl-tabs__tab"
+    [ngClass]="{ 'is-active': _filter == 'reminds' }"
+  >
+    <i class="material-icons m-icon">repeat</i>
+    <span class="m-full-label" i18n>بازنشر</span>
+  </a>
+</div>
+
+<div class="mdl-grid notifications-grid" style="max-width:600px">
+
+  <div class="mdl-cell mdl-cell--12-col">
+
+  <afs-notification
+    *ngFor="let notification of notifications"
+    class="mdl-card mdl-shadow--2dp item"
+    [notification]="notification"
+  ></afs-notification>
+
+  <infinite-scroll
+    distance="25%"
+    (load)="load()"
+    [moreData]="moreData"
+    [inProgress]="inProgress">
+  </infinite-scroll>
+
+  </div>
+
+</div>

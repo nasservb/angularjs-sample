@@ -1,0 +1,49 @@
+<div class="afs-usercard-banner">
+	<div class="mdl-color--blue-grey afs-card-banner"
+    [ngStyle]="{'background-image': 'url(' + bannerSrc + ')'}"
+  ></div>
+	<div class="afs-banner-overlay"></div>
+</div>
+
+<a [routerLink]="['/', user.username]" class="mdl-card__supporting-text afs-usercard-block">
+	<div class="avatar">
+			<img src="{{minds.cdn_url}}icon/{{user.guid}}/{{avatarSize}}/{{user.icontime}}" class="mdl-shadow--2dp"/>
+	</div>
+	<div class="body">
+		<h3>{{user.name}}</h3>
+		<span>{{user.username}}@</span>
+
+        <div class="m-usercard-bio">
+          <div class="m-usercard-bio-location" [hidden]="!user.city">
+            <i class="material-icons mdl-color-text--blue-grey-400">location_city</i>
+            {{user.city}}
+          </div>
+          <div class="m-usercard-bio-brief" [hidden]="!user.briefdescription">
+            <i class="material-icons mdl-color-text--blue-grey-400">assignment</i>
+            {{user.briefdescription}}
+          </div>
+        </div>
+    </div>
+</a>
+
+<afs-button-subscribe [user]="user" *ngIf="user.guid != session.getLoggedInUser().guid"></afs-button-subscribe>
+<afs-button-feature [object]="user" *ngIf="session.isAdmin()"></afs-button-feature>
+<afs-button-boost [object]="user" *ngIf="user.guid == session.getLoggedInUser().guid"></afs-button-boost>
+<div class="afs-usercard-buttons" [ngClass]="{ 'has-feature-button': session.isAdmin() }">
+	<ng-content select="[buttons]"></ng-content>
+</div>
+
+<div class="afs-tabs mdl-tabs__tab-bar">
+		<a class="mdl-tabs__tab mdl-color-text--blue-grey-500 1" [routerLink]="['/', user.username, 'subscribers']">
+			<span i18n>دنبال کنندگان</span>
+			<b>{{user.subscribers_count | number}}</b>
+		</a>
+		<a class="mdl-tabs__tab mdl-color-text--blue-grey-500 2" [routerLink]="['/', user.username, 'subscriptions']">
+			<span i18n>دنبال شوندگان</span>
+			<b>{{user.subscriptions_count | number}}</b>
+		</a>
+		<a class="mdl-tabs__tab mdl-color-text--blue-grey-500 3" [routerLink]="['/', user.username, 'feed']">
+			<span i18n>نمایش ها</span>
+			<b>{{user.impressions | number}}</b>
+		</a>
+</div>

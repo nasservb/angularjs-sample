@@ -1,0 +1,46 @@
+m-boost-console-booster {
+  .m-boost-console-booster--cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $afs-padding * 2;
+    margin-top: $afs-padding;
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+
+    > button {
+      flex-shrink: 0;
+    }
+
+    > span {
+      margin-left: $afs-padding;
+    }
+  }
+
+  .m-boost-console-booster--content {
+    padding: $afs-padding * 2;
+
+    > h3 {
+      margin: 0.65em 0;
+      text-transform: uppercase;
+      font-family: 'Lato', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1;
+    }
+
+    afs-card {
+      margin-bottom: $afs-padding * 2;
+      position: relative;
+    }
+
+    .m-boost-console-booster--content-grid {
+      padding: 0;
+      margin: 0 (0 - $afs-padding);
+
+      afs-card {
+        margin-bottom: $afs-padding;
+      }
+    }
+  }
+}

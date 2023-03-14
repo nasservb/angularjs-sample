@@ -1,0 +1,48 @@
+<html>
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" crossorigin=""></script>
+<style>
+#map { height: 80%;width:90% }
+</style>
+</head>
+<body>
+<div id="map">
+</div>
+<script>
+var map = L.map('map').setView([35.71562,51.42609], 15);
+
+L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://shahrekhuban">شبکه آی تیمچه</a> '
+}).addTo(map);
+
+L.marker([35.71562,51.42609]).addTo(map)
+    .bindPopup('رستوران پارسی')
+    .openPopup();
+
+	
+L.marker([35.71829,51.42706]).addTo(map)
+    .bindPopup('پارسیان مهرگشت')
+    .openPopup();
+	
+L.marker([35.71496,51.41914]).addTo(map)
+    .bindPopup('قنادی مجلسی')
+    .openPopup();
+	
+L.marker([35.71184,51.43368]).addTo(map)
+    .bindPopup('آموزشگاه آرشیده')
+    .openPopup();
+
+	
+	
+L.marker([35.71497,51.42622]).addTo(map)
+    .bindPopup('آرایشگاه شیلا')
+    .openPopup();
+
+L.marker([35.71673,51.42684]).addTo(map)
+    .bindPopup('مسجد امام جواد(ع)')
+    .openPopup();
+</script>
+</body>
+</html>

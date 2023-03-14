@@ -1,0 +1,12 @@
+<div class="m-messenger-bar">
+  <div class="m-messenger-conversations-wrappers">
+    <afs-messenger-conversation-dockpanes>
+
+      <afs-messenger-dockpane [style.right]="0">
+        <afs-messenger-userlist #userList *ngIf="encryption.isOn()"></afs-messenger-userlist>
+        <afs-messenger-setup-chat #setupChat *ngIf="!encryption.isOn()"></afs-messenger-setup-chat>
+      </afs-messenger-dockpane>
+
+    </afs-messenger-conversation-dockpanes>
+  </div>
+</div>

@@ -1,0 +1,224 @@
+<div class="m--spam-notice mdl-shadow--8dp" *ngIf="service?.spam || service?.deleted">
+  <ng-container *ngIf="service?.spam" i18n="@@BLOGS__VIEW__FLAGGED_AS_SPAM">این کسب و کار به عنوان اسپم شناسایی شده است .</ng-container>
+  <ng-container *ngIf="service?.deleted" i18n="@@BLOGS__VIEW__FLAGGED_AS_DELETED">این کسب و کار حذف شده است .</ng-container>
+
+  <ng-container *ngIf="!session.isAdmin()" i18n="@@M__ACTION__APPEAL_MARK">
+    If you wish to appeal, please check your <a routerLink="/settings/reported-content">Reported Content console</a>.
+  </ng-container>
+</div>
+
+<header *ngIf="service"
+        [ngClass]="{ 'm-mature-content': attachment.shouldBeBlurred(service), 'm-mature-content-shown': attachment.isForcefullyShown(service) }"
+>
+
+  <afs-banner class="service-banner" [object]="service" *ngIf="service.header_bg"></afs-banner>
+</header>
+
+<div class="mdl-grid m-service-container services-grid  mdl-color--grey-100"  *ngIf="service.guid">
+
+  <div class="mdl-cell mdl-cell--2-col service-thumbnail">
+    <i class="material-icons">camera</i>آلبوم تصاویر :
+    <br/>
+    <a class="" *ngFor="let image of images" target="_blank" href="/media/{{image.guid}}" >
+      <img src="fs/v1/thumbnail/{{image.guid}}/medium" />
+    </a>
+  </div>
+
+
+
+  <div class="mdl-cell--8-col" >
+
+    <div class="mdl-cell mdl-cell--12-col">
+      <h1 class="m-service--title">{{service.title}}</h1>
+    </div>
+
+    <!-- Owner box -->
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--5-col afs-service-ownerblock" *ngIf="service.ownerObj.username != 'undefined'" >
+        <div class="afs-avatar" [hovercard]="service.ownerObj.guid">
+          <a [routerLink]="['/', service.ownerObj.username]">
+            <img src="{{minds.cdn_url}}icon/{{service.ownerObj.guid}}/small/{{service.ownerObj.icontime}}" class="mdl-shadow--2dp"/>
+          </a>
+        </div>
+        <div class="afs-body">
+          <a [routerLink]="['/', service.ownerObj.username]" class="mdl-color-text--blue-grey-500">{{service.ownerObj.name}}</a>
+          <span *ngIf="service.time_created">{{ service.time_created_shamsi }}</span>
+        </div>
+      </div>
+	  
+	  <div class="mdl-cell mdl-cell--5-col afs-service-ownerblock" *ngIf="service.ownerObj.username == 'undefined'" >
+	  صاحب این کسب و کار پروفایل ندارد. اگر این پروفایل متعلق به شماست می توانید درخواست نموده و آن را مدیریت نمایید . 
+	  </div>
+
+      <div class="mdl-cell mdl-cell--7-col m-actions-block">
+        <div class="mdl-layout-spacer"></div>
+        <m-post-menu [entity]="service" [user]="service.ownerObj" [askForCategoriesWhenFeaturing]="true" [canDelete]="service.ownerObj.guid == session.getLoggedInUser().guid || session.isAdmin()" [options]="menuOptions" (optionSelected)="menuOptionSelected($event)"></m-post-menu>
+
+        <afs-button-remind [object]="service"></afs-button-remind>
+        <afs-button-thumbs-up [object]="service"></afs-button-thumbs-up>
+        <afs-button-thumbs-down [object]="service"></afs-button-thumbs-down>
+      </div>
+
+
+    </div>
+
+
+    <div style=" padding:8px; position:relative;" >
+      <div class="mdl-cell mdl-cell--12-col afs-service-body"
+           [innerHtml]="service.description | safe"
+           [ngClass]="{ 'm-mature-text': attachment.shouldBeBlurred(service) }"
+           [hidden]="!service.description"
+      ></div>
+    </div>
+
+
+
+
+  </div>
+
+  <div class="mdl-cell mdl-cell--2-col service-rate"  style="text-align:center;">
+    <h5 class="srv-item-title">امتیاز کاربران از  {{rateCount}} رای  :</h5>
+    <input disabled class="mdl-slider mdl-js-slider is-upgraded" type="range" min="0" max="100" [value]="rate1" tabindex="0" data-upgraded=",MaterialSlider"  >انصاف ({{rate1}})<br><br>
+        <input disabled class="mdl-slider mdl-js-slider is-upgraded" type="range" min="0" max="100" [value]="rate2" tabindex="0" data-upgraded=",MaterialSlider"  >صداقت ({{rate2}})<br><br>
+        <input disabled class="mdl-slider mdl-js-slider is-upgraded" type="range" min="0" max="100" [value]="rate3" tabindex="0" data-upgraded=",MaterialSlider"  >اخلاق و مشتری مداری ({{rate3}})<br><br>
+        <input disabled class="mdl-slider mdl-js-slider is-upgraded" type="range" min="0" max="100" [value]="rate4" tabindex="0" data-upgraded=",MaterialSlider"  >ارزش نسبت به قیمت ({{rate4}})<br>  <br>            
+        <input disabled class="mdl-slider mdl-js-slider is-upgraded" type="range" min="0" max="100" [value]="rate5" tabindex="0" data-upgraded=",MaterialSlider"  >کیفیت خدمت ({{rate5}})<br>
+  </div>
+
+
+
+</div>
+
+<div class="mdl-grid mdl-cell mdl-cell--12-col mdl-color--white" style="text-align:center;">
+
+  <h4 class="srv-item-title">خدمات مشابه  :</h4></div>
+  <div class=" mdl-grid mdl-cell mdl-cell--12-col">
+
+  <div class="mdl-cell mdl-cell--2-col"  *ngFor="let sService of similarServices">
+    <afs-card-service [object]="sService"   class=" mdl-card mdl-shadow--2dp afs-banner-card">
+    </afs-card-service>
+  </div>
+</div>
+
+<div class="   mdl-color--grey-100">
+
+  <h4  class="srv-item-title" >مشخصات</h4>
+  <div class="mdl-tabs__tab-bar mdl-cell mdl-cell--12-col">
+
+
+  <a class="mdl-tabs__tab " i18n="" id="tlink-1"  (click)="showTab(1)" href="javascript:void(0)">مشخصات کسب و کار</a>
+  <a class="mdl-tabs__tab"    id="tlink-2" (click)="showTab(2)" href="javascript:void(0)">نظرات کاربران</a>
+  <a class="mdl-tabs__tab" i18n=""   id="tlink-3" (click)="showTab(3)" href="javascript:void(0)">امتیاز دهی</a>
+
+</div>
+
+<div class="mdl-layout__content" style="width: 100%">
+
+  <section class="mdl-layout__tab-panel mdl-cell mdl-cell--8-col"  style="display: block;margin: 0 auto;" id="tab-1" >
+    <div class="page-content">{{service.description}}</div>
+	<table>
+		<tr>
+			<td>تلفن ثابت </td>
+			<td>{{service.phone}}</td>
+		</tr>
+		<tr>
+			<td>موبایل تلفن</td>
+			<td>{{service.mobile}}</td>
+		</tr>
+		<tr>
+			<td>تلگرام </td>
+			<td>{{service.telegram}}</td>
+		</tr>
+		<tr>
+			<td>اینستاگرام</td>
+			<td>{{service.instagram}}</td>
+		</tr>
+		<tr>
+			<td>وبسایت</td>
+			<td>{{service.website}}</td>
+		</tr>	
+		<tr>
+			<td>آدرس</td>
+			<td>{{service.address}}</td>
+		</tr>	
+	</table>
+	 
+  </section>
+
+  <section class="mdl-layout__tab-panel mdl-cell mdl-cell--8-col"  style="display: block;margin: 0 auto;" id="tab-2">
+    <div class="page-content">
+      <div class="mdl-grid services-grid" *ngIf="service.guid">
+        <afs-comments [object]="service"></afs-comments>
+      </div>
+    </div>
+  </section>
+
+  <section class="mdl-layout__tab-panel mdl-cell mdl-cell--8-col"  style="display: block;margin: 0 auto;" id="tab-3">
+    <div class="page-content">
+
+ 
+
+
+
+
+      <div class="mdl-cell mdl-cell--2-col"  style="text-align:center;">
+         
+      </div>
+
+      <h4>نظر شما :</h4>
+      <div class="mdl-cell mdl-cell--8-col"  style="text-align:center;">
+
+         <afs-rates [object]="service"></afs-rates>
+      </div>
+
+
+    </div>
+  </section>
+</div>
+
+  <h4  class="srv-item-title">مقاله های مرتبط :</h4>
+<div class="mdl-grid mdl-cell mdl-cell--12-col"  style="text-align:center;">
+
+  <div class="mdl-cell mdl-cell--2-col" *ngFor="let post of posts">
+      <afs-activity [object]="post"  ></afs-activity>
+  </div>
+</div>
+
+
+<div class="mdl-cell mdl-cell--12-col    mdl-color--grey-100"   >
+  <h4  class="srv-item-title">فیلم های مرتبط :</h4>
+  <div class="mdl-grid mdl-cell--12-col"  >    
+    <div class="mdl-cell mdl-cell--2-col"  *ngFor="let video of videos">
+        <afs-card-video  [object]="video"   class="mdl-card mdl-shadow--2dp" ></afs-card-video>
+    </div>
+  </div>
+</div>
+
+  <div class="mdl-grid mdl-cell mdl-cell--12-col"   >
+
+    <div class="mdl-cell--12-col" >
+      <h4 class="srv-item-title">تصاویر مرتبط :</h4>
+    </div>
+  <div class=" mdl-cell mdl-cell--2-col"  *ngFor="let image of images">
+      <afs-card-image  [object]="image"   class="mdl-card mdl-shadow--2dp" ></afs-card-image>
+  </div>
+</div>
+
+
+
+
+<m-modal-confirm *ngIf="deleteToggle"
+                 [open]="true"
+                 [closeAfterAction]=true
+                 (closed)="deleteToggle = false"
+                 (actioned)="delete($event)"
+                 yesButton="حذف"
+                 i18n-yesButton="@@M__COMMON__DELETE_PERMANENTLY"
+>
+  <p confirm-message>
+    <!-- i18n: @@BLOGS__VIEW__CONFIRM_DELETION -->آیا برای حذف این کسب و کار اطمینان دارید<br><br>There's no UNDO!<!-- /i18n -->
+  </p>
+  <p confirm-success-message>
+    <!-- i18n: @@BLOGS__VIEW__DELETION_CONFIRMATION -->کسب و کار حذف شد . <!-- /i18n -->
+  </p>
+</m-modal-confirm>

@@ -1,0 +1,15 @@
+$afs-padding: 8px;
+m-button--admin-actions {
+  display: inline-block;
+  position: relative;
+
+  > span.afs-button-edit {
+    display: inline-block;
+  }
+
+  .afs-dropdown-menu {
+    right: auto;
+    top: $afs-padding * 3;
+    left: 0;
+  }
+}

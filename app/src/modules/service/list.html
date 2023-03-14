@@ -1,0 +1,27 @@
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb"  [innerHTML]="navigateion">
+  </ol>
+</nav>
+<div class="mdl-grid services-grid" style="max-width:900px">
+
+  <a class="mdl-cell mdl-cell--4-col" [routerLink]="['/service/edit/new']" style="text-decoration: none;">
+    <div class="mdl-card mdl-shadow--2dp mdl-color--blue-grey-400 mdl-color-text--blue-grey-100 afs-add-card">
+      <i class="material-icons">add</i>
+      <h3 i18n="@@BLOGS__CREATE_NEW_BLOG">ثبت کسب و کار جدید</h3>
+    </div>
+  </a>
+
+  <div class="mdl-cell mdl-cell--4-col" *ngFor="let service of services">
+    <afs-card-service [object]="service" class=" mdl-card mdl-shadow--2dp afs-banner-card">
+    </afs-card-service>
+  </div>
+
+  <infinite-scroll
+      distance="25%"
+      (load)="load()"
+      [moreData]="moreData"
+      [inProgress]="inProgress">
+  </infinite-scroll>
+
+</div>

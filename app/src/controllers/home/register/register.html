@@ -1,0 +1,16 @@
+<section class="m-video-banner">
+  <div class="video" style="background-image: url('assets/logos/back.jpg')">
+    <video autoplay muted loop poster="assets/logos/back.jpg" *ngIf="flags.canPlayInlineVideos">
+      <source src="{{minds.cdn_url}}assets/videos/afsaran/afsaran{{ vm }}.webm" type="video/webm">
+      <source src="{{minds.cdn_url}}assets/videos/afsaran/afsaran.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="overlay overlay--0.6">
+    <div class="" style="max-width:400px">
+      <div class="mdl-color-text--white">
+        <h4 class="forTextJustify" i18n>در شبکه آی تیمچه عضو نیستید؟ از طریق فرم زیر پروفایل خود را ایجاد کنید.</h4>
+      </div>
+      <afs-form-register (done)="registered()" [referrer]="referrer"></afs-form-register>
+    </div>
+  </div>
+</section>

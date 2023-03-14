@@ -1,0 +1,31 @@
+<m-modal [open]="open" (closed)="onClose($event)" *ngIf="!session.isLoggedIn() || display != 'initial'">
+    <div class="mdl-card__title" [hidden]="display == 'onboarding' || display == 'categories'">
+        <img src="/assets/logos/small.png" (click)="close()"/>
+        <h4 class="mdl-color-text--grey-600 forColorBlack" i18n>شبکه آی تیمچه</h4>
+    </div>
+
+    <!-- Initial Display -->
+    <div class="forInitialForm" *ngIf="display == 'initial'">
+        <div class="mdl-card__supporting-text m-signup-buttons">
+        <button class="mdl-color--amber" (click)="do('register')">
+            <span class="m-signup-button-text">
+            <!-- i18n -->ورود به شبکه آی تیمچه <!-- /i18n -->
+            </span>
+        </button>
+        </div>
+        <div class="mdl-card__supporting-text">
+        <span class="m-modal-signup-skip forColorBlack" (click)="close()" i18n>بعدا یادآوری کن</span>
+        </div>
+    </div>
+    <!-- Login Display -->
+    <afs-form-login (done)="done('login')" (doneRegistered)="display = 'fb-complete'" (canceled)="close()" *ngIf="display == 'login'"></afs-form-login>
+    <!-- Register Display -->
+    <span style="font-weight: bold;text-align:center;font-size: 13px;margin-bottom: -14px;cursor: pointer;" class="mdl-color-text--blue-grey" *ngIf="display == 'register'" (click)="do('login')" i18n>آیا شما پروفایل دارید؟ اینجا را کلیک نمایید.</span>
+    <afs-form-register (done)="done('register')" (canceled)="close()" *ngIf="display == 'register'"></afs-form-register>
+    <!-- FB Signin final phase -->
+    <afs-form-fb-register (done)="done('register')" (canceled)="close()" *ngIf="display == 'fb-complete'"></afs-form-fb-register>
+    <!-- Categories selector -->
+    <afs-onboarding-categories-selector (done)="done('categories')" *ngIf="display == 'categories'"></afs-onboarding-categories-selector>
+    <!-- Tutorial Display -->
+    <afs-tutorial *ngIf="display == 'tutorial'"></afs-tutorial>
+</m-modal>

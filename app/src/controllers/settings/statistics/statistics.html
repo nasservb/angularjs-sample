@@ -1,0 +1,92 @@
+<div class="mdl-grid" style="max-width:900px">
+
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text" i18n>Your details</h2>
+  </div>
+  <div class="mdl-card__supporting-text">
+    <div class="afs-settings-data-text-container">
+      <div class="afs-settings-data-text">
+        <!-- i18n -->Full Name<!-- /i18n -->
+      </div>
+      <div class="afs-settings-data-text">
+        {{data.fullname}}
+      </div>
+    </div>
+    <div class="afs-settings-data-text-container">
+      <div class="afs-settings-data-text">
+        <!-- i18n -->Email<!-- /i18n -->
+      </div>
+      <div class="afs-settings-data-text">
+        {{data.email}}
+      </div>
+    </div>
+    <div class="afs-settings-data-text-container">
+      <div class="afs-settings-data-text">
+        <!-- i18n -->Member since<!-- /i18n -->
+      </div>
+      <div class="afs-settings-data-text">
+        {{data.memberSince * 1000 | date:'shortTime'}} - {{data.memberSince * 1000 | date:'longDate'}}
+      </div>
+    </div>
+    <div class="afs-settings-data-text-container">
+      <div class="afs-settings-data-text">
+        <!-- i18n -->Last logged in<!-- /i18n -->
+      </div>
+      <div class="afs-settings-data-text">
+        {{data.lastLogin * 1000 | date:'shortTime'}} - {{data.lastLogin * 1000 | date:'longDate'}}
+      </div>
+    </div>
+
+  </div>
+
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text" i18n>Your content</h2>
+  </div>
+  <div class="mdl-card__supporting-text">
+  </div>
+
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text" i18n>Your usage</h2>
+  </div>
+  <div class="mdl-card__supporting-text">
+    <div class="afs-settings-data-text-container">
+      <div class="afs-settings-data-text">
+        <!-- i18n -->Storage<!-- /i18n -->
+      </div>
+      <div class="afs-settings-data-text">
+        {{data.storage}}
+      </div>
+    </div>
+    <div class="afs-settings-data-text-container">
+      <div class="afs-settings-data-text">
+        <!-- i18n -->Bandwidth<!-- /i18n -->
+      </div>
+      <div class="afs-settings-data-text">
+        {{data.bandwidth}}
+      </div>
+    </div>
+  </div>
+
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text" i18n>Referrals</h2>
+  </div>
+  <div class="mdl-card__supporting-text">
+    <div class="afs-settings-data-text-container">
+      <div class="afs-settings-data-text">
+        <!-- i18n -->Referrals<!-- /i18n -->
+      </div>
+      <div class="afs-settings-data-text">
+        {{data.referrals}}
+      </div>
+    </div>
+    <div class="afs-settings-data-text-container">
+      <div class="afs-settings-data-text">
+        <!-- i18n -->Earnings<!-- /i18n -->
+      </div>
+      <div class="afs-settings-data-text">
+        {{data.earnings}}
+      </div>
+    </div>
+  </div>
+
+</div>

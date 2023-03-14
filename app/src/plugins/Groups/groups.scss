@@ -1,0 +1,649 @@
+@import 'defaults.scss';
+
+.afs-banner-card{
+  afs-groups-join-button{
+    position: absolute;
+    margin: -38px 130px;
+  }
+  .m-groups-card-stats{
+    position: absolute;
+    margin: -48px 0 0 116px;
+    width: 168px;
+  }
+  &.m-group-card{
+    min-height: 142px !important;
+
+    .afs-usercard-banner {
+      img{
+        margin-top:-24px;
+      }
+    }
+  }
+}
+afs-groups-profile{
+
+  .members-grid{
+    display:flex;
+    flex-flow:row wrap;
+  }
+
+  .afs-channel-media-sidebard{
+    display: flex;
+    flex-wrap: wrap;
+    padding:0;
+    width:100%;
+    a {
+      height: 88px;
+      display:inline-block;
+      width:calc(100% / 3);
+      background-color:#333;
+      background-position:
+      center center;
+      background-size:cover;
+    }
+    img{
+      width: 100%;
+      max-width:80px;
+      max-height:80px;
+    }
+  }
+
+  header {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    height: 360px;
+    box-sizing: content-box;
+    overflow: visible;
+
+  }
+
+  afs-banner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+
+    .afs-banner{
+      max-height:440px;
+      height:440px;
+    }
+
+    .save-bar {
+      background: transparent !important;
+      .save-button{
+        display: none !important;
+      }
+    }
+  }
+
+  .group-header-bar {
+    z-index: 9999;
+  }
+
+  .m-group--sidebar{
+    .mdl-card{
+      padding:0;
+      overflow:visible;
+    }
+    afs-avatar{
+      margin-top: -75px;
+      width: 150px;
+      height: 150px;
+      margin: -75px auto 0;
+      padding: 0;
+   
+      .afs-avatar{
+        margin:0;
+        background-position: center center;
+        background-size: cover;
+        width: 100%;   
+        height: 100%;
+        border-radius: 50%;
+      }
+    }
+  }
+
+  .m-group--stats{
+      border: 0;
+      pointer-events: all;
+
+      @media screen and (max-width: 768px) {
+        justify-content: center;
+      }
+
+      a span {
+        width: 100%;
+        display: block;
+        font-size: 11px;
+        height: 11px;
+        vertical-align: middle;
+        line-height: 36px;
+      }
+
+      .mdl-tabs__action-buttons {
+        padding-top: 4px;
+        padding-right: 0;
+        display: flex;
+        flex-flow: row nowrap;
+        overflow: visible;
+      }
+  }
+
+  .groups-grid-bottom {
+    pointer-events: none;
+    align-items: flex-end;
+    padding: 0;
+    width: 100%
+  }
+
+  .m-groups-invite-form {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .m-groups-invite-actions {
+    text-align: right;
+  }
+
+  .m-group-invite-dialog {
+    padding: $afs-padding * 2;
+    text-align: center;
+
+    afs-groups-join-button {
+      margin-left: 0.5em;
+    }
+  }
+
+  afs-groups-profile-members {
+    margin-top: 0 !important;
+
+    .m-groups-member-card afs-card-user.afs-user-ephemeral {
+      opacity: 0.5;
+      -webkit-filter: grayscale(100%);
+    }
+  }
+
+
+  .m-group-closed-splash{
+
+    .m-group-closed-splash-inner{
+      width: 360px;
+      margin: 180px auto;
+      text-align: center;
+      position: relative;
+
+      .m-group-avatar{
+        min-height:140px;
+      }
+
+      .afs-avatar{
+        background:transparent;
+        margin:auto;
+      }
+    }
+
+  }
+
+  .m-groups-search-member {
+    input {
+      padding: 12px;
+      font-size: 14px;
+      width: 100%;
+    }
+  }
+
+}
+
+afs-groups-profile-members-invite {
+  width: 100%;
+
+  .mdl-card__title{
+    padding-bottom:0;
+  }
+
+  .mdl-card__supporting-text{
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  span{
+    display:block;
+    padding:$afs-padding;
+  }
+
+  .m-search-inline{
+    margin-top:$afs-margin*2;
+  }
+}
+
+.m-group-info {
+
+  @media screen and (max-width: $min-tablet) {
+    order: -1;
+  }
+
+  .mdl-card{
+    padding:$afs-padding;
+    margin-bottom:$afs-margin;
+  }
+
+  afs-channel-modules.mdl-card {
+    padding:0;
+    min-height:0;
+    margin-top: $afs-margin;
+  }
+
+  .m-group-info-name,
+  .m-group-info-brief-description,
+  .m-group-info-tags,
+  .m-group-info-membership,
+  .m-group-boost {
+    width:auto;
+    min-height:0;
+    padding:$afs-padding;
+
+    i.material-icons {
+      //font-size: 16px;
+      vertical-align: middle;
+      padding-right:$afs-padding;
+    }
+
+    > div {
+      > span {
+        vertical-align: middle;
+        font-size: 11px;
+        padding: 4px 7px;
+        margin: 2px 2px;
+        border: 1px solid rgb(238, 238, 238);
+        border-radius: 3px;
+        display: inline-block;
+      }
+    }
+
+    h1 {
+      font-size: 26px;
+      font-weight: 400;
+      margin:0;
+      text-align:center;
+    }
+    input[type=text], select, textarea {
+      width: 100%;
+      padding: $afs-padding;
+      vertical-align: middle;
+      border: 1px solid #ddd;
+
+      &.h1 {
+        font-size: 26px;
+        font-weight: 400;
+      }
+
+      &.icon-prefix {
+        width: 85%;
+        width: calc(100% - 38px);
+      }
+
+    }
+
+    &.m-group-info-brief-description{
+      span{
+        white-space: pre-line;
+        word-wrap: break-word;
+      }
+    }
+
+    afs-form-tags-input{
+      width: 80%;
+      width: calc(100% - 48px);
+      display:inline-block;
+    }
+
+    select{
+      padding: 8px;
+      border-radius: 0;
+      -webkit-appearance: none;
+    }
+
+  }
+
+  .m-group-info-membership{
+    font-size:12px;
+  }
+
+  .m-group-info-brief-description {
+    > .mdl-card__supporting-text {
+      padding-top: 0;
+    }
+  }
+
+  .m-group-info-members {
+    width: auto;
+
+    .mdl-card__title {
+      padding-bottom: 0;
+      position: relative;
+
+      > a {
+        position: absolute;
+        right: 16px;
+        top: 25px;
+        font-size: 13px;
+        color: inherit;
+        text-decoration: none;
+        border-bottom: 1px dotted #ddd;
+      }
+    }
+
+    .members-grid {
+      min-height: 0;
+    }
+  }
+}
+
+.group-avatar{
+  padding:$afs-padding;
+  img{
+    width:100%;
+  }
+}
+
+afs-groups-create{
+
+  .m-group-saving-overlay{
+    width:100%;
+    height:100%;
+    position:fixed;
+    background:rgba(0,0,0,0.8);
+
+    text-align: center;
+    padding-top: 30%;
+    padding-top: 50vh;
+    padding-top: calc(50vh - 50px);
+
+    z-index:999;
+  }
+
+  .afs-banner{
+    max-height:400px;
+    height:400px;
+  }
+
+  form{
+    width:100%;
+  }
+  .m-groups-name,
+  .m-groups-tags,
+  .m-groups-new-invitee {
+    width:100%;
+
+    input{
+      padding:$afs-padding*2;
+    }
+    label{
+      padding:($afs-padding*2)-4 $afs-padding*2;
+    }
+  }
+
+  .m-groups-brief{
+    width:100%;
+
+    textarea{
+      padding:$afs-padding*2;
+    }
+    label{
+      top:inherit;
+      bottom:24px;
+      padding:($afs-padding*2)-4 $afs-padding*2;
+    }
+
+  }
+  .m-groups-brief.is-focused{
+    label{
+      bottom:0;
+      top:24px;
+    }
+  }
+
+  .m-groups-visibilty{
+    width:100%;
+    .mdl-radio{
+      display:block;
+    }
+  }
+
+  .m-groups-save{
+
+    button{
+      float:right;
+      margin:$afs-margin;
+    }
+
+  }
+
+}
+
+.m-group--action-buttons{
+  padding:16px;
+  margin:auto;
+  display:flex;
+
+  afs-groups-settings-button {
+    position: relative;
+    margin:0 16px;
+
+    > button {
+      position: relative;
+      top: 8px;
+      font-size: 23px;
+      text-transform: none;
+    }
+
+    .afs-dropdown-menu {
+      position: absolute;;
+      top: 44px;
+      right: 0;
+      left: auto;
+      width: 200px;
+      margin-top: 0;
+      text-transform: capitalize;
+    }
+
+    m-modal{
+      z-index: 999;
+      position: relative;
+    }
+  }
+
+  .afs-button-edit, afs-button-feature{
+    padding:$afs-padding;
+
+    button.material-icons{
+      padding: 4px 8px;
+      font-size: 23px;
+    }
+    button > .material-icons{
+      font-size: 23px;
+    }
+  }
+  afs-groups-join-button{
+    padding:$afs-padding $afs-padding*2;
+  }
+}
+
+.m-group-title{
+  h1, input{
+    font-size: 56px;
+  }
+}
+
+afs-groups-profile-requests{
+  transform-style: preserve-3d;
+
+  > .mdl-card {
+    max-height: 94px;
+  }
+
+  .mdl-cell{
+    min-height:0;
+  }
+
+  .mdl-card__title{
+    position: relative;
+    top: 14px - $afs-padding;
+    padding: $afs-padding;
+  }
+
+  .afs-avatar{
+    margin-right:$afs-margin;
+    img{
+      width:50px;
+    }
+  }
+
+  .afs-body {
+    > a {
+      display: block;
+      font-size: 1.1em;
+      text-decoration: none;
+    }
+
+    > span {
+      display: block;
+      font-size: 0.75em;
+    }
+  }
+
+  .mdl-card__actions{
+    border-top: 0;
+    width: auto;
+    right: 0;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0 $afs-padding*2;
+  }
+}
+
+.m-groups-button-badge {
+  color: #45565E;
+  font-size: 14px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: #ffffff;
+  border-radius: 2px;
+  opacity: 0.65;
+}
+
+.m-group-closed{
+  .tabs{
+    afs-button-remind{
+      display:none;
+    }
+    .afs-boost-button{
+      display:none;
+    }
+  }
+}
+
+afs-groups-card-user-actions-button {
+  > button {
+    padding: 0 !important;
+  }
+
+  .afs-dropdown-menu {
+    top: 12px;
+    right: 0;
+    width: 180px;
+    z-index: 10000;
+  }
+
+  m-modal{
+    z-index: 99999;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    .m-modal-container {
+      max-width: 480px;
+      min-width:auto;
+      height: auto;
+      min-height:0;
+      margin: 0 auto;
+      text-transform: none;
+      text-align: left;
+
+
+      .mdl-card{
+        min-height:0;
+      }
+    }
+
+    .afs-modal-dialog-actions {
+      padding: 0 $afs-padding $afs-padding;
+      box-sizing: border-box;
+      text-align: right;
+
+      > button {
+        line-height: 1em;
+      }
+    }
+
+  }
+}
+
+.afs-dropdown-menu .afs-menu-info-item {
+  color: #999999;
+}
+
+afs-groups-create {
+  .save-bar {
+    display: none !important;
+  }
+
+  .invitees {
+    > span {
+      background: #ddd;
+      display: inline-block;
+      padding: 1px 6px 2px;
+      border-radius: 2px;
+      margin-right: 0.35em;
+
+      .m-remove-invitee {
+        font-size: inherit;
+        position: relative;
+        top: 2px;
+        cursor: pointer;
+        color: #999;
+      }
+    }
+  }
+
+  header {
+    position: relative;
+
+    .avatar-wrapper {
+      position: relative;
+      pointer-events: none;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    afs-avatar {
+      position: absolute;
+      bottom: 12px;
+      right: 0;
+      pointer-events: all;
+
+      .afs-avatar {
+        width: 200px;
+        height: 200px;
+      }
+    }
+  }
+}

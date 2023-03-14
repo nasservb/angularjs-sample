@@ -1,0 +1,80 @@
+<section class="afs-homepage-banner m-video-banner" #banner [class.m-video-banner-expand]="banner.expand">
+  <div class="home-search">
+    <div class="mdl-grid m-homepage-grid">
+      <div class="mdl-cell mdl-cell--12-col m-homepage-titles">
+        <h2 i18n>  شبکه آی تیمچه</h2>
+        <h4 [hidden]="session.isLoggedIn()" i18n>جامعه مجازی کسبه منصف و مسئولیت پذیر</h4>
+		
+		
+        <h5 *ngIf="session.isLoggedIn()" i18n>{{session.getLoggedInUser().name}} عزیز، خوش آمدی</h5>
+      </div>
+      <div class="mdl-cell mdl-cell--8-col m-homepage-signup" >
+          <afs-search-bar></afs-search-bar>
+		  
+      </div>
+	  
+	   <div class="mdl-cell mdl-cell--8-col m-homepage-application " [hidden]="session.isLoggedIn()" >
+			<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" tabindex="0" [routerLink]="['/login']">
+            ورود / ثبت نام
+			<i class="material-icons mdl-color-text--blue-grey-100">account_circle</i>
+			</button>
+			<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" tabindex="0">
+            دریافت اپلیکیشن
+			<i class="material-icons mdl-color-text--blue-grey-100">get_app</i>
+			</button>
+		</div>
+    </div>
+  </div>
+</section> 
+<span style="width: 100%; height: 1px; background: #DEDEDE; display: block;"></span>
+
+<span style="width: 100%; height: 1px; background: #DEDEDE; display: block;"></span>
+
+<div class="mdl-grid mdl-grid--no-spacing m-homepage-stream">
+
+    <h4 class="mdl-color-text--blue-grey-200 mdl-cell--12-col forColorBlack">برگزیده ها
+		<br/>
+		<div class="mdl-tabs__tab-bar">
+			<a class="mdl-tabs__tab" i18n="" href="#">ویدئو ها</a>
+			<a class="mdl-tabs__tab" i18n="" href="#">تصاویر</a>
+			<a class="mdl-tabs__tab" i18n="" href="#" >مقاله ها</a>
+			<a class="mdl-tabs__tab is-active" i18n="" href="#">کسب و کار ها</a>
+		</div>	
+	</h4>
+
+	
+    <section class="mdl-cell mdl-cell--4-col">
+      <afs-activity [object]="activity"  *ngFor="let activity of stream[1]"></afs-activity>
+    </section>
+
+    <section class="mdl-cell mdl-cell--4-col">
+      <afs-activity [object]="activity"  *ngFor="let activity of stream[2]"></afs-activity>
+    </section>
+
+    <section class="mdl-cell mdl-cell--4-col">
+      <afs-activity [object]="activity"  *ngFor="let activity of stream[3]"></afs-activity>
+    </section>
+
+    <div [hidden]="!inProgress" style="width:100%; text-align:center; ">
+      <div class="mdl-spinner mdl-js-spinner is-active" [mdl] style="margin: 16px auto;"></div>
+    </div>
+
+    <div class="m-homepage-fader" [hidden]="inProgress">
+      <div class="m-homepage-fader--load-more" (click)="loadStream()">برای بارگذاری بیشتر کلیک کنید</div>
+    </div>
+</div>
+
+
+<div class="mdl-grid mdl-grid--no-spacing m-homepage-featured m-homepage-footer">
+
+    <section class="mdl-cell mdl-cell--12-col m-footer mdl-color--blue-grey-900">
+      <ul class="m-footer-nav m-footer-nav-inline">
+        <li *ngFor="let page of navigation.getItems('footer')" class="m-footer-nav-item ">
+          <a *ngIf="page.path && page.path.indexOf('p/') > -1" [routerLink]="[page.path]" class="mdl-color-text--blue-grey-100">{{page.title}}</a>
+          <a *ngIf="page.path.indexOf('p/') < 0" [href]="page.path" target="_blank" class="mdl-color-text--blue-grey-100">{{page.title}}</a>
+        </li>
+      </ul>
+      <span class="copyright mdl-color-text--blue-grey-700" i18n>&#169; iTimcheh.net 2018</span>
+    </section>
+
+</div>

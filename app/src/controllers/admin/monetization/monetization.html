@@ -1,0 +1,33 @@
+
+<div class="mdl-grid m-admin-reports" style="max-width:600px">
+
+  <div class="mdl-cell mdl-cell--12-col">
+    <div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active" [hidden]="entities.length > 0 || !inProgress"></div>
+
+    <div class="mdl-card__supporting-text m-no-reports" [hidden]="inProgress || moreData || entities.length > 0">
+      <!-- i18n -->Nothing is monetized .<!-- /i18n -->
+    </div>
+
+    <div class="mdl-card mdl-shadow--4dp m-report" *ngFor="let entity of entities; let i = index">
+
+      <afs-card-video [object]="entity" class="mdl-card" *ngIf="entity.subtype == 'video'"></afs-card-video>
+      <afs-card-image [object]="entity" class="mdl-card" *ngIf="entity.subtype == 'image'"></afs-card-image>
+      <afs-card-blog [object]="entity" class="mdl-card" *ngIf="entity.subtype == 'blog'"></afs-card-blog>
+      <afs-card-user [object]="entity" class="mdl-card" *ngIf="entity.type == 'user'"></afs-card-user>
+      <afs-activity [object]="entity" class="mdl-card" *ngIf="entity.type == 'activity'"></afs-activity>
+
+      <div class="mdl-card__supporting-text m-action-buttons">
+        <button class="mdl-button mdl-button--raised mdl-button--colored mdl-color--red" (click)="deMonetize(entity, i)" i18n>De-Monetize</button>
+      </div>
+
+    </div>
+  </div>
+
+  <infinite-scroll
+      distance="25%"
+      (load)="load()"
+      [moreData]="moreData"
+      [inProgress]="inProgress">
+  </infinite-scroll>
+
+</div>

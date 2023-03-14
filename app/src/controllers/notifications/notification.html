@@ -1,0 +1,544 @@
+<div class="avatar">
+  <a [routerLink]="['/', notification.fromObj.username || '']" *ngIf="notification.fromObj">
+    <img [src]="'/icon/' + notification.fromObj.guid + '/small/' + notification.fromObj.icontime" class="mdl-shadow--2dp"/>
+  </a>
+</div>
+
+<div [ngSwitch]="notification.notification_view" class="body">
+
+  <!-- subscribed -->
+  <ng-template ngSwitchCase="friends">
+    <a [routerLink]="['/', notification.fromObj.username || '']">
+      <p *ngIf="notification.fromObj.subscribed" i18n>{{notification.fromObj.name}} شما را دنبال میکند</p>
+      <p *ngIf="!notification.fromObj.subscribed" i18n>{{notification.fromObj.name}} شما را دنبال میکند</p>
+    </a>
+  </ng-template>
+
+  <!-- group inivite -->
+  <ng-template ngSwitchCase="group_invite">
+    <a [routerLink]="['/groups/profile', notification.params.group.guid, 'activity']">
+      <p i18n>{{notification.params.user}} شما را دعوت کرده است تا به  <span class="pseudo-link mdl-color-text--blue-grey-400">{{notification.params.group.name}} پیوندید</span></p>
+    </a>
+  </ng-template>
+
+  <!-- group kick -->
+  <ng-template ngSwitchCase="group_kick">
+    <a [routerLink]="['/groups/profile', notification.params.group.guid, 'activity']">
+      <p i18n> شما از  <span class="pseudo-link mdl-color-text--blue-grey-400">{{notification.params.group.name}} حذف شدید</span></p>
+    </a>
+  </ng-template>
+
+  <!-- group activity -->
+  <ng-template ngSwitchCase="group_activity">
+    <a [routerLink]="['/newsfeed', notification.entityObj.guid]">
+      <p>
+        <!-- i18n --><span class="pseudo-link mdl-color-text--blue-grey-400">{{notification.fromObj.name}}</span> در <span class="pseudo-link mdl-color-text--blue-grey-400">{{notification.params.group.name}} مطلب جدیدی بارگذاری کرده است</span><!-- /i18n -->
+      </p>
+    </a>
+  </ng-template>
+
+  <!-- comment -->
+  <ng-template ngSwitchCase="comment">
+    <div *ngIf="notification.entityObj">
+
+      <!-- Activity -->
+      <a *ngIf="notification.entityObj.type == 'activity'"
+         [routerLink]="['/newsfeed', notification.entityObj.guid]">
+        <p *ngIf="notification.entityObj.owner_guid == session.getLoggedInUser().guid && !notification.entityObj.title">
+          <!-- i18n -->{{notification.fromObj.name}} به <span class="pseudo-link mdl-color-text--blue-grey-400">فعالیت شما</span> نظر داده است<!-- /i18n -->
+        </p>
+        <p *ngIf="notification.entityObj.owner_guid != session.getLoggedInUser().guid  && !notification.entityObj.title">
+          <!-- i18n -->{{notification.fromObj.name}} در <span class="pseudo-link mdl-color-text--blue-grey-400">{{notification.entityObj.ownerObj.name}}'s فعالیت</span> نظر داده است<!-- /i18n -->
+        </p>
+        <p *ngIf="notification.entityObj.title">
+          <!-- i18n -->{{notification.fromObj.name}} در <span class="pseudo-link mdl-color-text--blue-grey-400">{{notification.entityObj.title | excerpt}}</span> نظر داده است <!-- /i18n -->
+        </p>
+      </a>
+
+      <!-- Object-->
+      <div *ngIf="notification.entityObj.type == 'object'">
+
+        <div *ngIf="notification.entityObj.subtype == 'blog'">
+          <a [routerLink]="['/blog/view', notification.entityObj.guid]">
+            <p i18n>{{notification.fromObj.name}} در <span class="pseudo-link mdl-color-text--blue-grey-400">{{notification.entityObj.title | excerpt}}</span> نظر داده است </p>
+          </a>
+        </div>
+
+        <div *ngIf="notification.entityObj.subtype != 'blog'">
+          <a [routerLink]="['/media', notification.entityObj.guid]">
+            <p>
+              <!-- i18n -->{{notification.fromObj.name}} در <!-- /i18n -->
+              <span class="pseudo-link mdl-color-text--blue-grey-400" *ngIf="notification.entityObj.title" >{{notification.entityObj.title | excerpt}}</span>
+              <span class="pseudo-link mdl-color-text--blue-grey-400" *ngIf="notification.entityObj.owner_guid != session.getLoggedInUser().guid && !notification.entityObj.title" i18n="object belonging to user">{{notification.entityObj.ownerObj.name}}'s {{notification.entityObj.subtype}}</span>
+              <span class="pseudo-link mdl-color-text--blue-grey-400" *ngIf="notification.entityObj.owner_guid == session.getLoggedInUser().guid && !notification.entityObj.title" i18n="object belonging to current user">{{notification.entityObj.subtype}} شما </span>
+              نظر داده است
+            </p>
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Default -->
+      <a *ngIf="notification.entityObj.type != 'object' && notification.entityObj.type != 'activity'">
+        <p style="font-style:italic">
+          <!-- i18n -->هنگام مشاهده این اعلان خطایی روی داد.<!-- /i18n -->
+        </p>
+      </a>
+    </div>
+  </ng-template>
+
+  <!-- up voted content -->
+  <ng-template ngSwitchCase="like">
+    <div *ngIf="notification.entityObj">
+      <a [routerLink]="['/newsfeed', notification.entityObj.guid]" *ngIf="notification.entityObj.type == 'object'">
+        <p>
+          <!-- i18n -->{{notification.fromObj.name}} به <!-- /i18n -->
+          <span class="pseudo-link mdl-color-text--blue-grey-400" *ngIf="notification.entityObj.title">{{notification.entityObj.title | excerpt}}</span>
+          <span class="pseudo-link mdl-color-text--blue-grey-400" *ngIf="!notification.entityObj.title" i18n="object belonging to current user">{{notification.entityObj.subtype}} شما </span>
+           امتیاز مثبت داد
+        </p>
+      </a>
+      <a [routerLink]="['/newsfeed', notification.entityObj.guid]" *ngIf="notification.entityObj.type == 'activity'">
+        <p *ngIf="notification.entityObj.title">
+          <!-- i18n -->{{notification.fromObj.name}} به <span class="pseudo-link mdl-color-text--blue-grey-400">{{notification.entityObj.title | excerpt}} امتیاز مثبت داد</span><!-- /i18n -->
+        </p>
+        <p *ngIf="!notification.entityObj.title">
+          <!-- i18n -->{{notification.fromObj.name}} به <span class="pseudo-link mdl-color-text--blue-grey-400"> فعالیت شما امتیاز مثبت داد</span><!-- /i18n -->
+        </p>
+      </a>
+      <a [routerLink]="['/newsfeed', notification.entityObj.parent_guid]" *ngIf="notification.entityObj.type == 'comment'">
+        <p>
+          <!-- i18n -->{{notification.fromObj.name}} به <span class="pseudo-link mdl-color-text--blue-grey-400"> نظر شما امتیاز مثبت داد </span><!-- /i18n -->
+        </p>
+      </a>
+      <a [routerLink]="['/newsfeed', notification.entityObj.guid]" *ngIf="!notification.entityObj">
+        <p style="font-style:italic">
+          <!-- i18n -->این مطلب حذف گردید<!-- /i18n -->
+        </p>
+      </a>
+    </div>
+  </ng-template>
+
+  <!-- down voted content -->
+  <ng-template ngSwitchCase="downvote">
+    <div *ngIf="notification.entityObj">
+      <a [routerLink]="['/newsfeed', notification.entityObj.guid]" *ngIf="notification.entityObj.type == 'object'">
+        <p>
+          <!-- i18n -->{{notification.fromObj.name}} در <!-- /i18n -->
+          <span class="pseudo-link mdl-color-text--blue-grey-400" *ngIf="notification.entityObj.title">{{notification.entityObj.title | excerpt}}</span>
+          <span class="pseudo-link mdl-color-text--blue-grey-400" *ngIf="!notification.entityObj.title" i18n="object belonging to current user">{{notification.entityObj.subtype}} شما </span>
+           امتیاز منفی داد
+        </p>
+      </a>
+      <a [routerLink]="['/newsfeed', notification.entityObj.guid]" *ngIf="notification.entityObj.type == 'activity'">
+        <p *ngIf="notification.entityObj.title">
+          <!-- i18n -->{{notification.fromObj.name}} در  <span class="pseudo-link mdl-color-text--blue-grey-400">{{notification.entityObj.title | excerpt}} امتیاز منفی داد</span><!-- /i18n -->
+        </p>
+        <p *ngIf="!notification.entityObj.title">
+          <!-- i18n -->{{notification.fromObj.name}} به  <span class="pseudo-link mdl-color-text--blue-grey-400">فعالیت شما امتیاز منفی داد</span><!-- /i18n -->
+        </p>
+      </a>
+      <a [routerLink]="['/newsfeed', notification.entityObj.parent_guid]" *ngIf="notification.entityObj.type == 'comment'">
+        <p>
+          <!-- i18n -->{{notification.fromObj.name}} به <span class="pseudo-link mdl-color-text--blue-grey-400"> نظر شما امتیاز منفی داد </span><!-- /i18n -->
+        </p>
+      </a>
+      <a [routerLink]="['/newsfeed', notification.entityObj.guid]" *ngIf="!notification.entityObj">
+        <p style="font-style:italic">
+          <!-- i18n -->این مطلب حذف شده است<!-- /i18n -->
+        </p>
+      </a>
+    </div>
+  </ng-template>
+
+  <!-- Remind -->
+  <ng-template ngSwitchCase="remind">
+    <div *ngIf="notification.entityObj">
+      <a [routerLink]="['/newsfeed', notification.entityObj.guid]" *ngIf="notification.entityObj.type == 'object'">
+        <p><!-- i18n -->{{notification.fromObj.name}} <!-- /i18n -->
+          <span class="pseudo-link mdl-color-text--blue-grey-400"  *ngIf="notification.entityObj.title">{{notification.entityObj.title | excerpt}}</span>
+          <span class="pseudo-link mdl-color-text--blue-grey-400"  *ngIf="!notification.entityObj.title" i18n="object belonging to current user">{{notification.entityObj.subtype}} شما </span>
+          باز نشر داد
+        </p>
+      </a>
+      <a [routerLink]="['/newsfeed', notification.entityObj.guid]" *ngIf="notification.entityObj.type == 'activity'">
+        <p *ngIf="notification.entityObj.title">
+          <!-- i18n -->{{notification.fromObj.name}}  <span class="pseudo-link mdl-color-text--blue-grey-400">{{notification.entityObj.title | excerpt}} را باز نشر داد</span><!-- /i18n -->
+        </p>
+        <p *ngIf="!notification.entityObj.title">
+          <!-- i18n -->{{notification.fromObj.name}}  <span class="pseudo-link mdl-color-text--blue-grey-400">فعالیت شما را بازنشر داد</span><!-- /i18n -->
+        </p>
+      </a>
+    </div>
+  </ng-template>
+
+  <!-- featured -->
+  <ng-template ngSwitchCase="feature">
+    <div *ngIf="notification.entityObj">
+      <a [routerLink]="['/newsfeed', notification.entityObj.guid]">
+        <p i18n><span class="pseudo-link mdl-color-text--blue-grey-400">{{notification.entityObj.title | excerpt}}</span> برگزیده شد.</p>
+      </a>
+    </div>
+  </ng-template>
+
+  <!-- mention -->
+  <ng-template ngSwitchCase="tag">
+    <div *ngIf="notification.entityObj">
+      <!-- tags from comments link differently -->
+      <a [routerLink]="['/newsfeed', notification.entityObj.guid]" *ngIf="notification.entityObj.type != 'comment'">
+        <p i18n>{{notification.fromObj.name}} در یک نوشته شما را رونوشت کرده است</p>
+      </a>
+      <a [routerLink]="['/newsfeed', notification.entityObj.parent_guid]" *ngIf="notification.entityObj.type == 'comment'">
+        <p i18n>{{notification.fromObj.name}} در یک نظر شما را رونوشت کرده است</p>
+      </a>
+    </div>
+  </ng-template>
+
+  <!-- missed-call -->
+  <ng-template ngSwitchCase="missed_call">
+    <a >
+      <p i18n><span class="pseudo-link mdl-color-text--blue-grey-400" >{{notification.fromObj.name}}</span> در حال تلاش برای برقرای ارتباط با شما است</p>
+    </a>
+  </ng-template>
+
+<!--  &lt;!&ndash; boost_gift &ndash;&gt;
+  <ng-template ngSwitchCase="boost_gift">
+    <a [routerLink]="notification.entityObj.type == 'activity' ? ['/newsfeed', notification.entityObj.guid] : ['/wallet/boost/content']">
+      <p>
+        &lt;!&ndash; i18n &ndash;&gt;{{notification.fromObj.name}} gifted you {{notification.params.impressions}} views <span *ngIf="notification.entityObj">for</span>&lt;!&ndash; /i18n &ndash;&gt;
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && notification.entityObj.title">{{notification.entityObj.title | excerpt}}</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && notification.entityObj.name">{{notification.entityObj.name}}</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && !notification.entityObj.name && notification.entityObj.type !== 'user'" i18n>نوشته شما</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && !notification.entityObj.name && notification.entityObj.type === 'user'" i18n>پروفایل شما</span>
+      </p>
+    </a>
+  </ng-template>
+
+  &lt;!&ndash; Standard boost notification for owner &ndash;&gt;
+  <ng-template ngSwitchCase="boost_submitted">
+    <a [routerLink]="notification.entityObj.type == 'activity' ? ['/newsfeed', notification.entityObj.guid] : ['/wallet/boost/content']">
+      <p>&lt;!&ndash; i18n &ndash;&gt;{{notification.params.impressions}} views <span *ngIf="notification.entityObj">for</span>&lt;!&ndash; /i18n &ndash;&gt;
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && notification.entityObj.title">{{notification.entityObj.title | excerpt}}</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && notification.entityObj.name">{{notification.entityObj.name}}</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && !notification.entityObj.name && notification.entityObj.type !== 'user'" i18n>نوشته شما</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && !notification.entityObj.name && notification.entityObj.type === 'user'" i18n>پروفایل شما</span>
+        &lt;!&ndash; i18n: boost &ndash;&gt; در انتظار تصویب است&lt;!&ndash; /i18n &ndash;&gt;
+      </p>
+    </a>
+  </ng-template>
+
+  &lt;!&ndash; P2P boost submitted &ndash;&gt;
+  <ng-template ngSwitchCase="boost_submitted_p2p">
+    <a [routerLink]="notification.entityObj.type == 'activity' ? ['/newsfeed', notification.entityObj.guid] : ['/wallet/boost/content']">
+      <p>&lt;!&ndash; i18n &ndash;&gt;{{notification.params.points}} points <span *ngIf="notification.entityObj">for</span>&lt;!&ndash; /i18n &ndash;&gt;
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && notification.entityObj.title">{{notification.entityObj.title | excerpt}}</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && notification.entityObj.name">{{notification.entityObj.name}}</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && !notification.entityObj.name && notification.entityObj.type !== 'user'" i18n>نوشته شما</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && !notification.entityObj.name && notification.entityObj.type === 'user'" i18n>پروفایل شما</span>
+        &lt;!&ndash; i18n: boost &ndash;&gt;در انتظار تصوب توسط <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400">@{{notification.params.channel}}</span> است&lt;!&ndash; /i18n &ndash;&gt;
+      </p>
+    </a>
+  </ng-template>
+
+  &lt;!&ndash; P2P Boost Request &ndash;&gt;
+  <ng-template ngSwitchCase="boost_request">
+    <a ng-click="loadBoostReview(notification.entityObj.guid)">
+      <p>&lt;!&ndash; i18n &ndash;&gt;{{notification.fromObj.name}} is offering you {{notification.params.points}} points to boost&lt;!&ndash; /i18n &ndash;&gt;
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && notification.entityObj.title">{{notification.entityObj.title | excerpt}}</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && notification.entityObj.name">{{notification.entityObj.name}}</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && !notification.entityObj.name && notification.entityObj.type !== 'user'" i18n>فعالیت آن ها</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && !notification.entityObj.name && notification.entityObj.type === 'user'" i18n>پروفایل آن ها</span>
+      </p>
+    </a>
+  </ng-template>
+
+  &lt;!&ndash; Boost reject &ndash;&gt;
+  <ng-template ngSwitchCase="boost_rejected">
+    <a [routerLink]="notification.entityObj.type == 'activity' ? ['/newsfeed', notification.entityObj.guid] : ['/wallet/boost/content']">
+      <p>&lt;!&ndash; i18n &ndash;&gt;Your boost <span *ngIf="notification.entityObj">for</span>&lt;!&ndash; /i18n &ndash;&gt;
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && notification.entityObj.title">{{notification.entityObj.title | excerpt}}</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && notification.entityObj.name">{{notification.entityObj.name}}</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && !notification.entityObj.name && notification.entityObj.type !== 'user'" i18n>نوشته شما</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && !notification.entityObj.name && notification.entityObj.type === 'user'" i18n>پروفایل شما</span>
+        &lt;!&ndash; i18n: boost &ndash;&gt;was rejected: <ng-container *ngIf="notification.params.reason && notification.params.reason !== -1"><i>{{ findReason(notification.params.reason).label }}</i>.</ng-container> Your points have been credited back to your wallet.&lt;!&ndash; /i18n &ndash;&gt;
+      </p>
+    </a>
+  </ng-template>
+
+  &lt;!&ndash; Boost revoked &ndash;&gt;
+  <ng-template ngSwitchCase="boost_revoked">
+    <a [routerLink]="notification.entityObj.type == 'activity' ? ['/newsfeed', notification.entityObj.guid] : ['/wallet/boost/content']">
+      <p>&lt;!&ndash; i18n &ndash;&gt;You revoked your boost <span *ngIf="notification.entityObj">for</span>&lt;!&ndash; /i18n &ndash;&gt;
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && notification.entityObj.title">{{notification.entityObj.title | excerpt}}</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && notification.entityObj.name">{{notification.entityObj.name}}</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && !notification.entityObj.name && notification.entityObj.type !== 'user'" i18n>your post</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && !notification.entityObj.name && notification.entityObj.type === 'user'" i18n>your channel</span>
+        . &lt;!&ndash; i18n: boost &ndash;&gt;Your offer has been refunded.&lt;!&ndash; /i18n &ndash;&gt;
+      </p>
+    </a>
+  </ng-template>
+
+  &lt;!&ndash; Boost accepted &ndash;&gt;
+  <ng-template ngSwitchCase="boost_accepted">
+    <a [routerLink]="notification.entityObj.type == 'activity' ? ['/newsfeed', notification.entityObj.guid] : ['/wallet/boost/content']">
+      <p *ngIf="notification.params.impressions">&lt;!&ndash; i18n &ndash;&gt;{{notification.params.impressions}} points <span *ngIf="notification.entityObj">for</span>&lt;!&ndash; /i18n &ndash;&gt;
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && notification.entityObj.title">{{notification.entityObj.title | excerpt}}</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && notification.entityObj.name">{{notification.entityObj.name}}</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && !notification.entityObj.name && notification.entityObj.type !== 'user'" i18n>your post</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && !notification.entityObj.name && notification.entityObj.type === 'user'" i18n>your channel</span>
+        &lt;!&ndash; i18n: boost &ndash;&gt;were accepted.&lt;!&ndash; /i18n &ndash;&gt;
+      </p>
+      <p *ngIf="notification.params.points">&lt;!&ndash; i18n &ndash;&gt;{{notification.params.points}} points <span *ngIf="notification.entityObj">for</span>&lt;!&ndash; /i18n &ndash;&gt;
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && notification.entityObj.title">{{notification.entityObj.title | excerpt}}</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && notification.entityObj.name">{{notification.entityObj.name}}</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && !notification.entityObj.name && notification.entityObj.type !== 'user'" i18n>your post</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && !notification.entityObj.name && notification.entityObj.type === 'user'" i18n>your channel</span>
+        &lt;!&ndash; i18n: boost &ndash;&gt;were accepted.&lt;!&ndash; /i18n &ndash;&gt;
+      </p>
+    </a>
+  </ng-template>
+
+  &lt;!&ndash; Boost completed &ndash;&gt;
+  <ng-template ngSwitchCase="boost_completed">
+    <a [routerLink]="notification.entityObj.type == 'activity' ? ['/newsfeed', notification.entityObj.guid] : ['/wallet/boost/content']">
+      <p>&lt;!&ndash; i18n &ndash;&gt;{{notification.params.impressions}}/{{notification.params.impressions}} views <span *ngIf="notification.entityObj">for</span>&lt;!&ndash; /i18n &ndash;&gt;
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && notification.entityObj.title">{{notification.entityObj.title | excerpt}}</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && notification.entityObj.name">{{notification.entityObj.name}}</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && !notification.entityObj.name && notification.entityObj.type !== 'user'" i18n>your post</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && !notification.entityObj.name && notification.entityObj.type === 'user'" i18n>your channel</span>
+        &lt;!&ndash; i18n: boost &ndash;&gt;have been met.&lt;!&ndash; /i18n &ndash;&gt;</p>
+    </a>
+  </ng-template>
+
+  &lt;!&ndash; Boost (Peer) Request &ndash;&gt;
+  <ng-template ngSwitchCase="boost_peer_request">
+    <a [routerLink]="['/wallet/boost/peer']">
+      <p>
+        &lt;!&ndash; i18n &ndash;&gt;<b>@{{notification.from.username}}</b> is offering&lt;!&ndash; /i18n &ndash;&gt;
+        <b>
+          {{notification.params.bid}}
+          <span [hidden]="notification.params.type != 'pro'" i18n>USD</span>
+          <span [hidden]="notification.params.type != 'points'" i18n>points</span>
+        </b>
+        <span *ngIf="notification.entityObj">for</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && notification.entityObj.title">{{notification.entityObj.title | excerpt}}</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && notification.entityObj.name">{{notification.entityObj.name}}</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && !notification.entityObj.name && notification.entityObj.type !== 'user'" i18n>their post</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && !notification.entityObj.name && notification.entityObj.type === 'user'" i18n>their channel</span>
+      </p>
+    </a>
+  </ng-template>
+
+  &lt;!&ndash; Boost (Peer) Request &ndash;&gt;
+  <ng-template ngSwitchCase="boost_peer_accepted">
+    <a [routerLink]="['/wallet/boost/peer/outbox']">
+      <p>
+        &lt;!&ndash; i18n &ndash;&gt;<b>@{{notification.from.username}}</b> accepted your bid of&lt;!&ndash; /i18n &ndash;&gt;
+        <b>
+          {{notification.params.bid}}
+          <span [hidden]="notification.params.type != 'pro'" i18n>USD</span>
+          <span [hidden]="notification.params.type != 'points'" i18n>points</span>
+        </b>
+        <span *ngIf="notification.entityObj">for</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400"  *ngIf="notification.entityObj && notification.entityObj.title">{{notification.entity.title | excerpt}}</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && notification.entityObj.type !== 'user'" i18n>your post</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && notification.entityObj.type === 'user'" i18n>your channel</span>
+      </p>
+    </a>
+  </ng-template>
+
+  &lt;!&ndash; Boost (Peer) Rejeced &ndash;&gt;
+  <ng-template ngSwitchCase="boost_peer_rejected">
+    <a [routerLink]="['/wallet/boost/peer/outbox']">
+      <p>
+        &lt;!&ndash; i18n &ndash;&gt;<b>@{{notification.from.username}}</b> declined your bid of&lt;!&ndash; /i18n &ndash;&gt;
+        <b>
+          {{notification.params.bid}}
+          <span [hidden]="notification.params.type != 'pro'" i18n>USD</span>
+          <span [hidden]="notification.params.type != 'points'" i18n>points</span>
+        </b>
+        <span *ngIf="notification.entityObj" i18n="X points _for_ entity">for</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400"  *ngIf="notification.entityObj && notification.entityObj.title">{{notification.entity.title | excerpt}}</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && notification.entityObj.type !== 'user'" i18n>your post</span>
+        <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400" *ngIf="notification.entityObj && !notification.entityObj.title && notification.entityObj.type === 'user'" i18n>your channel</span>
+        &lt;!&ndash; i18n: boost &ndash;&gt;You have not been charged.&lt;!&ndash; /i18n &ndash;&gt;
+      </p>
+    </a>
+  </ng-template>-->
+
+  <!-- Programs (queued) -->
+  <ng-template ngSwitchCase="program_queued">
+    <a routerLink="/wallet">
+      <p>
+        <!-- i18n -->درخواست شما برای برنامه {{ notification.params.program }}  در انتظار تایید است.<!-- /i18n -->
+      </p>
+    </a>
+  </ng-template>
+
+  <!-- Programs (accepted) -->
+  <ng-template ngSwitchCase="program_accepted">
+    <a routerLink="/wallet">
+      <p>
+        <!-- i18n -->در خواست شما برای برنامه {{ notification.params.program }} تایید شد.<!-- /i18n -->
+      </p>
+    </a>
+  </ng-template>
+
+  <!-- Channel monetized -->
+  <ng-template ngSwitchCase="channel_monetized">
+    <a routerLink="/wallet">
+      <p>
+        <!-- i18n -->تبریک، کانال شما عمومی شده است.<!-- /i18n -->
+      </p>
+    </a>
+  </ng-template>
+
+  <!-- Programs (declined) -->
+  <ng-template ngSwitchCase="program_declined">
+    <a routerLink="/wallet">
+      <p>
+        <!-- i18n -->برنامه شما برای {{ notification.params.program }} رد شده است<!-- /i18n -->
+      </p>
+    </a>
+  </ng-template>
+
+<!--  &lt;!&ndash; Payouts (queued) &ndash;&gt;
+  <ng-template ngSwitchCase="payout_queued">
+    <a routerLink="/wallet/ledger">
+      <p>
+        &lt;!&ndash; i18n &ndash;&gt;Your payment request for {{ notification.params.amount | currency:'USD':true }} is awaiting approval.&lt;!&ndash; /i18n &ndash;&gt;
+      </p>
+    </a>
+  </ng-template>
+
+  &lt;!&ndash; Payouts (accepted) &ndash;&gt;
+  <ng-template ngSwitchCase="payout_accepted">
+    <a routerLink="/wallet/ledger">
+      <p>
+        &lt;!&ndash; i18n &ndash;&gt;Your payment request for {{ notification.params.amount | currency:'USD':true }} was approved.&lt;!&ndash; /i18n &ndash;&gt;
+      </p>
+    </a>
+  </ng-template>
+
+  &lt;!&ndash; Payouts (declined) &ndash;&gt;
+  <ng-template ngSwitchCase="payout_declined">
+    <a routerLink="/wallet/ledger">
+      <p>
+        &lt;!&ndash; i18n &ndash;&gt;Your payment request for {{ notification.params.amount | currency:'USD':true }} was declined.&lt;!&ndash; /i18n &ndash;&gt;
+      </p>
+    </a>
+  </ng-template>
+
+  &lt;!&ndash; Points prompt &ndash;&gt;
+  <ng-template ngSwitchCase="custom_message">
+    <a>
+      <p>{{notification.params.message}}</p>
+    </a>
+  </ng-template>
+
+  &lt;!&ndash; Welcome points &ndash;&gt;
+  <ng-template ngSwitchCase="welcome_points">
+    <a [routerLink]="['/wallet']">
+      <p i18n>Welcome to Minds. We have given you  <span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400">1000 points</span> to get you started.</p>
+    </a>
+  </ng-template>-->
+
+  <!-- tutorial/promts -->
+  <ng-template ngSwitchCase="welcome_post">
+    <a [routerLink]="['/capture']">
+      <p i18n><span class="pseudo-link mdl-color-text--blue-grey-400">اینجا را کلیک کنید</span> تا یک مطلب ایجاد کنید</p>
+    </a>
+  </ng-template>
+
+  <!-- Welcome messages -->
+<!--  <ng-template ngSwitchCase="welcome_boost">
+    <a [routerLink]="['/', session.getLoggedInUser().username]">
+      <p i18n>You can gain more reach by boosting your content. Hit the blue boost icon on your posts.</p>
+    </a>
+  </ng-template>-->
+<!--  <ng-template ngSwitchCase="welcome_chat">
+    <a>
+      <p i18n>Chat securely with your mutual subscriptions.</p>
+    </a>
+  </ng-template>-->
+  <ng-template ngSwitchCase="welcome_discover">
+    <a [routerLink]="['/discovery/all']">
+      <p i18n><span class="pseudo-link mdl-color-text--blue-grey-400">اینجا را کلیک کنید</span> تا پروفایل ها و گالری ها را مشاهده نمایید. </p>
+    </a>
+  </ng-template>
+
+<!--  &lt;!&ndash; Messenger &ndash;&gt;
+  <ng-template ngSwitchCase="messenger_invite">
+    <a href="#" (click)="openMessengerWindow($event)">
+      <p>
+        &lt;!&ndash; i18n &ndash;&gt;<span class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400">{{notification.params.username}}</span> wants to chat with you!&lt;!&ndash; /i18n &ndash;&gt;
+      </p>
+    </a>
+  </ng-template>-->
+
+<!--
+  &lt;!&ndash; Wires prompt &ndash;&gt;
+  <ng-template ngSwitchCase="wire_happened">
+    <a *ngIf="notification.params.amount && notification.from && notification.to">
+      <p *ngIf="!notification.params.subscribed && notification.params.from_guid == session.getLoggedInUser().guid" i18n>
+        You have successfully wired {{notification.params.amount}} to <a [routerLink]="['/', notification.params.to_username]" class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400">@{{notification.params.to_username}}</a>
+      </p>
+
+      <p *ngIf="!notification.params.subscribed && notification.params.from_guid != session.getLoggedInUser().guid" i18n>
+        You have received a wire of {{notification.params.amount}} from <a [routerLink]="['/', notification.params.from_username]" class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400">@{{notification.params.from_username}}</a>
+      </p>
+
+      <p *ngIf="notification.params.subscribed && notification.params.from_guid == session.getLoggedInUser().guid" i18n>
+        You have subscribed to wire {{notification.params.amount}}/month to <a [routerLink]="['/', notification.params.to_username]" class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400">@{{notification.params.to_username}}</a>
+      </p>
+
+      <p *ngIf="notification.params.subscribed && notification.params.from_guid != session.getLoggedInUser().guid" i18n>
+        You have received a wire subscription of {{notification.params.amount}}/month from <a [routerLink]="['/', notification.params.from_username]" class="pseudo-link mdl-color-text&#45;&#45;blue-grey-400">@{{notification.params.from_username}}</a>
+      </p>
+    </a>
+  </ng-template>
+-->
+
+
+  <!-- report actioned notification -->
+  <ng-template ngSwitchCase="report_actioned">
+    <div *ngIf="notification.entityObj">
+
+      <!-- Activity -->
+      <a *ngIf="notification.entityObj.type == 'activity'"
+         target="_blank"
+         routerLink="/settings/reported-content">
+        <p *ngIf="notification.entityObj.owner_guid == session.getLoggedInUser().guid && !notification.entityObj.title">
+          <span class="pseudo-link mdl-color-text--blue-grey-400"> مطلب شما</span>{{notification.params.action}} شده است
+        </p>
+        <p *ngIf="notification.entityObj.owner_guid == session.getLoggedInUser().guid && notification.entityObj.title">
+          <span class="pseudo-link mdl-color-text--blue-grey-400">{{notification.entityObj.title}} مطلب شما </span>{{notification.params.action}} شده است
+        </p>
+      </a>
+
+      <!-- Comments -->
+      <a *ngIf="notification.entityObj.type == 'comment'"
+         target="_blank"
+         routerLink="/settings/reported-content">
+        <p *ngIf="notification.entityObj.owner_guid == session.getLoggedInUser().guid">
+          <span class="pseudo-link mdl-color-text--blue-grey-400">نظر شما </span>{{notification.params.action}} شده است
+        </p>
+      </a>
+
+      <!-- Default -->
+      <a *ngIf="notification.entityObj.type != 'comment' && notification.entityObj.type != 'activity'">
+        <p style="font-style:italic">
+          <!-- i18n -->هنگام مشاهده این اعلان خطایی روی داد.<!-- /i18n -->
+        </p>
+      </a>
+    </div>
+  </ng-template>
+
+  <!-- Default -->
+  <ng-template ngSwitchDefault>
+    <i i18n>با عرض پوزش، هنگام مشاهده این اعلان خطایی رخ داد</i>
+    <span hidden>مشاهده: {{ notification.notification_view }}</span>
+  </ng-template>
+
+  <span class="ts mdl-color-text--grey"> {{ notification.time_created_shamsi }} {{ ((notification.time_created * 1000) | date:'H:m:s' ) }}</span>
+</div>

@@ -1,0 +1,34 @@
+@import "defaults";
+
+afs-form-fb-register{
+
+  .m-form, .mdl-card{
+    min-height:0;
+  }
+
+  .mdl-card__actions{
+    text-align:center;
+  }
+
+  margin-top:$afs-margin*2;
+  width:100% !important;
+
+  .mdl-grid{
+    padding:0;
+    width:100%;
+  }
+
+  label{
+    font-weight:bold;
+  }
+
+  input{
+    padding:$afs-padding*2;
+    margin:$afs-margin 0;
+    font-size:16px;
+    width:100%;
+    -webkit-appearance:none;
+    border: 1px solid #EEE;
+  }
+
+}

@@ -1,0 +1,77 @@
+<div class="afs-rates-container"
+  style="text-align: right;" 
+  commentsScroll
+  (previous)="autoloadPrevious()"
+  [emitter]="ratesScrollEmitter"
+  scrollLock
+  (overscroll)="overscrollHandler($event)"
+  #scrollArea
+>
+  <div class="mdl-color-text--blue-grey-500 m-comments-load-more"
+    (click)="load()"
+    [ngClass]="{ 'm-disabled': inProgress }"
+    *ngIf="moreData || !loaded"
+  >
+    <span *ngIf="inProgress">
+      <i class="material-icons">autorenew</i> <!-- i18n -->Loading&hellip;<!-- /i18n -->
+    </span>
+    <span *ngIf="!inProgress && !loaded">
+      <i class="material-icons">update</i> <!-- i18n -->Load<!-- /i18n -->
+    </span>
+    <span *ngIf="!inProgress && loaded">
+      <i class="material-icons">update</i> <!-- i18n -->Load earlier<!-- /i18n -->
+    </span>
+    
+  </div>
+
+  <afs-card-rate *ngFor="let rate of rates; let i = index"
+    [object]="rate"
+    [parent]="parent"
+    (delete)="delete(i)"
+    (saved)="edited(i, $event)"
+    (onReply)="reply($event.rate)"
+  ></afs-card-rate>
+
+</div>
+
+
+<div class="mdl-card afs-rate afs-rate-post afs-block">
+
+    <div class="afs-avatar">
+      <a [routerLink]="['/', session.getLoggedInUser().username]">
+        <img src="{{minds.cdn_url}}icon/{{session.getLoggedInUser().guid}}/small/{{session.getLoggedInUser().icontime}}" class="mdl-shadow--2dp"/>
+      </a>
+    </div>
+
+    <div class="afs-body">
+
+        <div class="m-comments-composer" >
+            <form (submit)="post($event)">
+
+              <h4>  شما هم می توانید در مورد این کالا نظر بدهید</h4>
+
+               <input   type="range" min="0" max="100" value="75"  tabindex="0" data-upgraded=",MaterialSlider" id="rate-i-1" (change)="changeRate()">انصاف  <span id="rate-insert-1"></span>  <br><br>
+              <input    type="range" min="0" max="100" value="75"  tabindex="0" data-upgraded=",MaterialSlider"  id="rate-i-2" (change)="changeRate()">صداقت  <span id="rate-insert-2"></span>  <br><br>
+              <input     type="range" min="0" max="100" value="75"  tabindex="0" data-upgraded=",MaterialSlider"  id="rate-i-3" (change)="changeRate()">اخلاق و مشتری مداری  <span id="rate-insert-3"></span>  <br><br>
+              <input     type="range" min="0" max="100" value="75"  tabindex="0" data-upgraded=",MaterialSlider"  id="rate-i-4" (change)="changeRate()">ارزش نسبت به قیمت  <span id="rate-insert-4"></span>  <br><br>              
+              <input    type="range" min="0" max="100" value="75"  tabindex="0" data-upgraded=",MaterialSlider"  id="rate-i-5" (change)="changeRate()">کیفیت خدمت  <span id="rate-insert-5"></span>  <br>
+
+            
+            </form>
+
+
+            <div class="mdl-card__actions">
+              
+              <a class="m-post-button"
+              (click)="post($event)" >
+                <i class="material-icons">send</i>
+              </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<m-modal-signup-on-action [open]="showModal" (closed)="showModal = false" action="comment"></m-modal-signup-on-action>

@@ -1,0 +1,46 @@
+
+<div class="mdl-card mdl-color--red-500 mdl-color-text--blue-grey-50  mdl-shadow--2dp afs-login-box m-error-box" style="min-height:0;" [hidden]="!errorMessage">
+  <div class="mdl-card__supporting-text mdl-color-text--blue-grey-50">
+    {{errorMessage}}
+  </div>
+</div>
+
+<!-- START: LOGIN -->
+<form (submit)="$event.preventDefault()" [formGroup]="form" class="mdl-card mdl-color-text--blue-grey-400 m-form m-login-box" [hidden]="hideLogin">
+
+  <div class="mdl-card__supporting-text mdl-grid">
+
+    <div class="mdl-cell mdl-cell--12-col">
+      <input
+              type="text"
+              id="username"
+              formControlName="username"
+              placeholder="نام کاربری"
+              i18n-placeholder
+              (keydown.enter)="login(); $event.preventDefault();"
+      />
+    </div>
+
+    <div class="mdl-cell mdl-cell--12-col">
+      <input
+              type="password"
+              id="password"
+              formControlName="password"
+              placeholder="رمز عبور"
+              i18n-placeholder
+              (keydown.enter)="login(); $event.preventDefault();"
+      />
+    </div>
+  </div>
+
+  <div class="mdl-card__actions">
+    <button class="mdl-button mdl-button--raised mdl-button--colored" (click)="login()" [disabled]="inProgress">
+      <!-- i18n -->ورود<!-- /i18n -->
+    </button>
+    <a class="mdl-card__subtitle-text mdl-color-text--blue-grey-300 m-reset-password-link" [routerLink]="['/forgot-password']">
+      <!-- i18n -->فراموشی رمز عبور؟<!-- /i18n -->
+    </a>
+  </div>
+
+</form>
+<!-- END: LOGIN -->

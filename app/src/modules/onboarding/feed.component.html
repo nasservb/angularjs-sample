@@ -1,0 +1,16 @@
+<m-onboarding-card 
+    text="پروفایل خود را طراحی کنید"
+    subtext="بنر، آواتار و بیوگرافی خود را بروزرسانی کنید"
+    icon="mode_edit"
+    [route]="['/', session.getLoggedInUser().username, { editToggle: true}]"
+    class="mdl-color--blue-grey-800 mdl-color-text--white"
+    id="channel"
+></m-onboarding-card>
+
+<m-onboarding-card 
+    text="در پروفایل ها عضو شوید"
+    subtext="برای پیدا کردن مطالب مورد علاقه خود اینجا را کلیک کنید"
+    icon="person_add"
+    [route]="['/discovery/featured/channels']"
+    id="subscribe"
+></m-onboarding-card>

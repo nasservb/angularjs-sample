@@ -1,0 +1,27 @@
+.m-media-recommended--items {
+  margin-bottom: $afs-padding;
+
+  afs-card {
+    > :first-child {
+      margin-bottom: $afs-padding * 2;
+    }
+
+    &:last-child {
+      > :first-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  afs-card > * {
+    display: block;
+  }
+
+  .afs-video-thumbnail {
+    height: 120px !important;
+  }
+
+  .m-action-tabs {
+    display: none;
+  }
+}

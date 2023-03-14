@@ -1,0 +1,55 @@
+<div class="mdl-tabs__tab-bar m-report-console--tabs">
+  <a (click)="setFilter('review')" class="mdl-tabs__tab" [ngClass]="{ 'is-active': filter == 'review' }" i18n>تخلفات شما</a>
+  <a (click)="setFilter('pending')" class="mdl-tabs__tab" [ngClass]="{ 'is-active': filter == 'pending' }" i18n>درخواست تجدید نظر</a>
+  <a (click)="setFilter('approved')" class="mdl-tabs__tab" [ngClass]="{ 'is-active': filter == 'approved' }" i18n>درخواست تایید شده</a>
+  <a (click)="setFilter('rejected')" class="mdl-tabs__tab" [ngClass]="{ 'is-active': filter == 'rejected' }" i18n>درخواست رد شده</a>
+</div>
+
+<div *ngFor="let appeal of appeals; let i = index"
+  class="mdl-card mdl-shadow--2dp m-report-console--item"
+>
+
+  <div class="m-report-console--header mdl-color--blue mdl-color-text--white">
+    <b>{{ appeal.time_created * 1000 | date: 'short' }}</b>
+    <p>مطلب زیر به دلیل <b>{{ parseReason(appeal.reason) }} </b>، <b>{{ parseAction(appeal.action) }} </b>گردید.</p>
+  </div>
+
+  <div class="m-report-console--appeal">
+    <div class="m-report-console--appeal--composer" *ngIf="filter == 'review'">
+      <textarea #appealContent placeholder="اگر درخواست بازبینی برای این گزارش تخلف را دارید، دلایل خود را در این قسمت وارد نمائید"></textarea>
+
+      <button class="m-report-console--appeal--button"
+        [disabled]="appeal.inProgress"
+        (click)="sendAppeal(appeal, appealContent.value, i)"
+      >
+        ارسال درخواست
+      </button>
+    </div>
+    <div class="m-report-console--appeal-note" *ngIf="appeal.appeal_note">
+      <p>{{appeal.appeal_note}}</p>  
+    </div>    
+  </div>
+
+
+
+  <afs-card *ngIf="appeal.entityObj.type != 'comment'"
+    class="m-report-console--card"
+    [object]="appeal.entityObj"
+    hostClass="mdl-card"
+  ></afs-card>
+
+  <div *ngIf="appeal.entityObj.type == 'comment'" class="m-comment-wrapper">
+    <div class="m-report-console--comment-note">
+      <a target="_blank" [routerLink]="['/newsfeed', appeal.entityObj.parent_guid]">نظرات خود را در این قسمت مشاهده کنید</a>
+    </div>
+    <afs-card-comment [object]="appeal.entityObj" class="mdl-card"></afs-card-comment>
+  </div>
+
+</div>
+
+<infinite-scroll
+  distance="25%"
+  (load)="load()"
+  [moreData]="moreData"
+  [inProgress]="inProgress">
+</infinite-scroll>

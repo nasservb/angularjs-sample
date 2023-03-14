@@ -1,0 +1,83 @@
+m-modal-remind-composer {
+  cursor: default;
+
+  .m-modal-container {
+    width: 520px;
+    max-width: 90%;
+    min-width: 0;
+  }
+
+  .m-modal-remind-title {
+    font-weight: bold;
+    text-align: center;
+    margin: 8px 0;
+    font-size: 21px;
+  }
+
+  .m-modal-remind-composer {
+    position: relative;
+    padding: 0 $afs-padding * 2 $afs-padding * 2;
+    //margin-top: 36px + ($afs-padding * 2);
+    text-align: left;
+
+    textarea {
+      display: block;
+      width: 100%;
+      height: 4em;
+      border: 1px solid #ddd;
+      box-sizing: border-box;
+      padding: $afs-padding (24px + $afs-padding) $afs-padding $afs-padding;
+    }
+
+    .m-modal-remind-composer-buttons {
+      position: absolute;
+      right: $afs-padding * 3;
+      bottom: $afs-padding * 3;
+    }
+  }
+
+  afs-activity-preview {
+    display: block;
+    max-width: 100%;
+    margin: 0 ($afs-padding * 2) ($afs-padding * 2);
+    text-align: right;
+    box-sizing: border-box;
+    cursor: default;
+    overflow: auto !important;
+    max-height: 40vh;
+
+    > * {
+      pointer-events: none;
+    }
+
+    .m-owner-block {
+      padding: ($afs-padding * 2) !important;
+    }
+
+    .m-mature-overlay {
+      display: none !important;
+    }
+
+    .mdl-card__supporting-text {
+      padding: ($afs-padding * 2) !important;
+    }
+
+    .m-rich-embed {
+      padding: 0 ($afs-padding * 2) ($afs-padding * 2);
+    }
+
+    .item-image {
+      padding: 0 ($afs-padding * 2) ($afs-padding * 2);
+    }
+
+    .item-image-video {
+      afs-video {
+        background: transparent !important;
+
+        .afs-video-bar-full {
+          display: none !important;
+        }
+      }
+    }
+  }
+}

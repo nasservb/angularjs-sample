@@ -1,0 +1,96 @@
+
+<div class="mdl-card mdl-color--red-500 mdl-color-text--blue-grey-50  mdl-shadow--2dp afs-login-box m-error-box" style="min-height:0;" [hidden]="!errorMessage">
+  <div class="mdl-card__supporting-text mdl-color-text--blue-grey-50">
+    {{errorMessage}}
+  </div>
+</div>
+
+<!-- START: Register -->
+<form (submit)="$event.preventDefault()" [formGroup]="form" class="mdl-card mdl-color-text--blue-grey-400 m-form m-login-box" >
+
+	<div [hidden]="isVerificationCode">
+	  <div class="mdl-card__supporting-text mdl-grid">
+
+		
+		<div class="mdl-cell mdl-cell--12-col">
+		  <input
+				  type="text"
+				  id="username"
+				  formControlName="username"
+				  placeholder="نام کاربری"
+				  i18n-placeholder
+		  />
+		</div>
+
+		<div class="mdl-cell mdl-cell--12-col">
+		  <input
+				  type="password"
+				  id="password"
+				  formControlName="password"
+				  placeholder="رمز عبور"
+				  i18n-placeholder
+		  />
+		</div>
+
+		<div class="mdl-cell mdl-cell--12-col" [hidden]="!form.value.password">
+		  <input
+				  type="password"
+				  id="password2"
+				  formControlName="password2"
+				  placeholder="تایید رمز عبور"
+				  i18n-placeholder
+				  (keydown.enter)="register($event)"
+		  />
+		</div>
+
+		<div class="mdl-cell mdl-cell--12-col">
+		  <input
+				  type="text"
+				  id="mobile"
+				  formControlName="mobile"
+				  placeholder="شماره موبایل [09..]"
+				  i18n-placeholder
+		  />
+		  کد فعال سازی به شماره موبایل ارسال خواهد شد .
+		</div>
+		 
+	  </div>
+
+	  <div class="mdl-card__actions">
+		<button class="mdl-button mdl-button--raised mdl-button--colored m-register-btn" (click)="register($event)" [disabled]="inProgress">
+		  <!-- i18n -->ثبت نام<!-- /i18n -->
+		</button>
+		<span routerLink="/p/policy" class="m-register-tac" i18n>با ایجاد حساب کاربری شما با شرایط و قوانین موافقت کرده اید</span>
+	  </div>
+  </div>
+  
+  
+  
+  
+  
+	
+	<div [hidden]="!isVerificationCode">
+		<div class="mdl-cell mdl-cell--12-col">
+		  <input
+				  type="text"
+				  id="verfyCode"
+				  formControlName="verfyCode"
+				  placeholder="کد فعال سازی"
+				  i18n-placeholder
+		  /> 
+		</div>
+		<div class="mdl-card__actions">
+			<button class="mdl-button mdl-button--raised mdl-button--colored m-register-btn" (click)="verify($event)" [disabled]="inProgress">
+			  <!-- i18n -->ثبت نام<!-- /i18n -->
+			</button>
+			<a class="mdl-card__subtitle-text mdl-color-text--blue-grey-300 m-reset-password-link"  (click)="reSend($event)">
+			  <!-- i18n -->ارسال مجدد رمز عبور<!-- /i18n -->
+			</a>
+			 
+		</div>
+		
+	</div>
+  
+	
+</form>
+<!-- END: Register -->

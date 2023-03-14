@@ -1,0 +1,17 @@
+.m-admin-reports--comment-note {
+  text-align: center;
+  padding: $afs-padding;
+  font-size: 12px;
+
+  a {
+    text-decoration: none;
+    font-weight: 300;
+    color: #999999;
+  }
+}
+
+.m-admin-reports--tab-spacer {
+  display: inline-block;
+  height: 0;
+  width: $afs-padding * 3;
+}

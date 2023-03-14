@@ -1,0 +1,43 @@
+afs-settings-subscriptions .m-settings-subscriptions-list {
+  transform-style: preserve-3d;
+
+  > .mdl-card {
+    max-height: 94px;
+  }
+
+  .mdl-card__title{
+    position: relative;
+    top: 14px - $afs-padding;
+    padding: $afs-padding;
+  }
+
+  .afs-avatar{
+    margin-right:$afs-margin;
+    img{
+      width:50px;
+    }
+  }
+
+  .afs-body {
+    > a {
+      display: block;
+      font-size: 1.1em;
+      text-decoration: none;
+    }
+
+    > span {
+      display: block;
+      font-size: 0.75em;
+    }
+  }
+
+  .mdl-card__actions{
+    border-top: 0;
+    width: auto;
+    right: 0;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0 $afs-padding*2;
+  }
+}

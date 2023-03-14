@@ -1,0 +1,17 @@
+@import "defaults";
+
+afs-form-register{
+
+  .mdl-card__actions{
+    display:flex;
+    align-items:center;
+  }
+
+  .m-register-tac{
+    font-size:11px;
+    padding-right:$afs-padding*2;
+    color: #fff !important;
+    cursor: pointer;
+  }
+
+}

@@ -1,0 +1,34 @@
+<a [routerLink]="service.route ? [ '/' + service.route ] : [ '/service/view', service.guid ]"
+  class="mdl-card__title afs-service-thumbnail"
+  style="height:180px; margin-bottom:80px; background:#333; background-size:cover;"
+  [ngStyle]="{background: '#333 url(' + ('/fs/v1/banners/'+service.guid) +  ') center center / cover'}"
+  [ngClass]="{ 'm-mature-thumbnail': attachment.shouldBeBlurred(service) }"
+></a>
+<span class="m-mature-thumbnail-overlay"
+    *ngIf="attachment.shouldBeBlurred(service)"
+><i class="material-icons">explicit</i></span>
+
+<!-- Owner block -->
+<div class="mdl-card__supporting-text mdl-color-text--grey-600 m-title-block m-title-block-fixed m-title-block-with-actions" *ngIf="service.ownerObj && service.ownerObj.username">
+
+		<a [routerLink]="service.route ? [ '/' + service.route ] : [ '/service/view', service.guid ]" class="mdl-color-text--blue-grey-700">
+			<strong>{{ service.title }}</strong>
+		</a>
+
+		<div class="m-inline-owner-block">
+			<a [routerLink]="['/', service.ownerObj.username]" class="mdl-color-text--blue-grey-300" *ngIf="service.ownerObj.username != 'undefined'">
+				<img src="/icon/{{service.ownerObj.guid}}/small/{{service.ownerObj.icontime}}" class="mdl-shadow--2dp"/>
+				{{service.ownerObj.username}}
+			</a>
+			<span>{{ service.time_created_shamsi }}</span>
+      	<span *ngIf="service.ownerObj && service.owner_guid == session.getLoggedInUser().guid && !service.published" i18n="@@BLOGS__DRAFT_LABEL">Draft</span>
+		</div>
+
+</div>
+
+<div class="mdl-card__supporting-text mdl-color--blue-grey-50 m-action-tabs m-action-tabs-fixed">
+	<afs-button-thumbs-up [object]="service"></afs-button-thumbs-up>
+	<afs-button-thumbs-down [object]="service"></afs-button-thumbs-down>
+	<afs-button-comment [object]="service" [routerLink]="service.route ? [ '/' + service.route ] : [ '/service/view', service.guid ]"></afs-button-comment>	
+	<afs-button-feature [object]="service" *ngIf="session.isAdmin()"></afs-button-feature>
+</div>

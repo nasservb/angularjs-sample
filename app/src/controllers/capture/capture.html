@@ -1,0 +1,129 @@
+<div class="drag-animation mdl-color--blue-grey-600 mdl-color-text--blue-grey-50" [hidden]="!dragging">
+    <div class="drop">
+        <i class="material-icons">file_upload</i>
+        <p i18n>برای آپلود فایل، فایـل هـای خود را بـه این قسمت بکشید و رهـا کنیـد</p>
+    </div>
+
+</div>
+
+<div class="mdl-grid capture-grid" style="max-width:900px" >
+
+    <div class="mdl-cell mdl-cell--4-col">
+
+        <div class="mdl-card m-albums-selector" #toggle>
+            <div class="mdl-card__title">
+                <h2 class="mdl-card__title-text">
+                    <!-- i18n -->آلبوم<!-- /i18n -->
+                </h2>
+                <button class="mdl-button mdl-button--fab mdl-button--colored m-album-add" (click)="toggle.value = !toggle.value">
+                    <i class="material-icons">add</i>
+                </button>
+            </div>
+
+
+            <div class="mdl-card m-album m-album-create mdl-color--blue-grey-500" *ngIf="toggle.value">
+
+                <div class="mdl-card__title">
+                    <input
+                            type="text"
+                            #newalbum
+
+                    />
+                    <button class="mdl-button mdl-button--colored mdl-color-text--white" (click)="createAlbum(newalbum); toggle.value = false" i18n>ایجاد</button>
+
+                </div>
+
+            </div>
+
+            <div
+                    class="mdl-progress mdl-js-progress mdl-progress__indeterminate"
+                    [hidden]="albums.length > 0 && !inProgress"
+                    [mdl]
+            ></div>
+            <div *ngFor="let album of albums"
+                 class="mdl-card m-album mdl-color--blue-grey-50 mdl-color-text--blue-grey-500"
+                 [ngClass]="{'mdl-color--blue-grey-500': postMeta.album_guid == album.guid, 'mdl-color-text--blue-grey-50': postMeta.album_guid == album.guid}"
+                 (click)="selectAlbum(album)">
+
+                <div class="mdl-card__title" [ngClass]="{'mdl-color-text--blue-grey-50': postMeta.album_guid == album.guid}">
+                    <h2>{{album.title}}</h2>
+                </div>
+                <div class="mdl-card__menu">
+                    <i class="material-icons" (click)="deleteAlbum(album)">delete</i>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+
+    <!-- Upload output -->
+    <div class="mdl-cell mdl-cell--8-col">
+
+
+
+        <form class="mdl-card">
+            <div class="mdl-card__actions" style="display:flex;">
+                <div class="upload-button">
+                    <button class="mdl-button mdl-button--raised">
+                        <i class="material-icons">attachment</i>
+                        <span i18n>اضافه کردن فایل</span>
+                    </button>
+                    <input
+                            type="file"
+                            id="file"
+                            #file
+                            (change)="add(file); file.value = '';"
+                            multiple
+                            accept=""
+                    />
+                </div>
+
+                <div class="mdl-layout-spacer"></div>
+
+                <select name="defaultCategory" [(ngModel)]="default_category" class="mdl-color-text--blue-grey-300 m-form-select">
+                    <option *ngFor="let c of categories" [value]="c.value">{{c.text}}</option>
+                </select>
+
+                <button class="mdl-button mdl-button--raised mdl-button--colored m-capture-save-to-album-button" (click)="publish()" [disabled]="!uploads">
+                    <span i18n>ذخیره آلبوم</span>
+                </button>
+            </div>
+        </form>
+
+        <div class="mdl-card mdl-shadow--2dp m-upload" *ngFor="let upload of uploads; let i = index">
+            <div class="mdl-card__title m-capture-edit-container">
+                
+                      <input
+                        type="text"
+                        name="title"
+                        [(ngModel)]="upload.title"
+                        (change)="modify(i)"
+                />
+
+
+                <select name="license" [(ngModel)]="upload.category" (change)="modify(i)" class="mdl-color-text--blue-grey-300 m-form-select">
+                    <option *ngFor="let l of categories" [value]="l.value" >{{l.text}}</option>
+                </select>
+            </div>
+
+            <div class="mdl-progress mdl-js-progress"
+                 [mdlUpload]
+                 [progress]="upload.progress"
+                 [ngClass]="{'failed': upload.state == 'failed', 'complete': upload.state == 'complete'}"
+            ></div>
+
+        </div>
+
+        <div class="m-splash">
+            <i class="material-icons mdl-color-text--blue-grey-400">file_upload</i>
+            <h3 class="mdl-color-text--blue-grey-300" i18n>برای آپلود فایل، فایـل هـای خود را بـه این قسمت بکشید و رهـا کنیـد</h3>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,16 @@
+<div class="mdl-grid" style="max-width:900px">
+
+  <div class="mdl-cell mdl-cell--4-col">
+    <m-settings--navigation></m-settings--navigation>
+  </div>
+
+  <div class="mdl-cell mdl-cell--8-col afs-settings-content">
+    <afs-settings-general [card]="card" *ngIf="filter == 'general'"></afs-settings-general>
+    <!--<afs-settings-statistics *ngIf="filter == 'statistics'"></afs-settings-statistics>-->
+    <afs-settings-disable-channel *ngIf="filter == 'disable'"></afs-settings-disable-channel>
+    <afs-settings-two-factor *ngIf="filter == 'twoFactor'"></afs-settings-two-factor>
+    <afs-settings-subscriptions *ngIf="filter == 'subscriptions'"></afs-settings-subscriptions>
+    <p><span class="mdl-color-text--blue-grey-500" i18n>حساب کاربری در این تاریخ ایجاد شده است:</span> {{ account_time_created * 1000 | date: 'medium' }}</p>
+  </div>
+
+</div>
